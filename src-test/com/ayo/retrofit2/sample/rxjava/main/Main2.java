@@ -4,16 +4,14 @@ import java.util.List;
 
 import com.ayo.retrofit2.sample.rxjava.entity.Subject;
 import com.ayo.retrofit2.sample.rxjava.http.MovieService;
-
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
+import com.cowthan.codeworld.Utils;
 
 public class Main2 {
 	
 	public static void main(String[] args) {
 		
 		RxRetrofitManager.getDefault().getService(MovieService.class).getTopMovie3(0, 10)
-			.map(new TopResponseAnaliser<TopResponse<List<Subject>>, List<Subject>>())
+			.map(new TopResponseAnaliser<MyTopResponse<List<Subject>>, List<Subject>>())
 			 .subscribeOn(Schedulers.io())  //在IO线程发布，加上这个，就发不起请求，必须sleep几秒，保证http返回之前，进程没死
 	        //.unsubscribeOn(Schedulers.io())
 	        .observeOn(Schedulers.computation())  ///这一段可以封装，返回个Bean的Observable，并且指定线程
@@ -39,12 +37,7 @@ public class Main2 {
 				}
 			});
 		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Utils.sleep(6000);
 	}
 
 }

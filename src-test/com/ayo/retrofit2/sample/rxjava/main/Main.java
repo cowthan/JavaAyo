@@ -1,7 +1,12 @@
 package com.ayo.retrofit2.sample.rxjava.main;
 
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.TimeUnit;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.ayo.retrofit2.sample.rxjava.entity.HttpResult;
 import com.ayo.retrofit2.sample.rxjava.entity.Subject;
@@ -9,15 +14,7 @@ import com.ayo.retrofit2.sample.rxjava.http.ApiException;
 import com.ayo.retrofit2.sample.rxjava.http.HttpMethods;
 import com.ayo.retrofit2.sample.rxjava.http.MovieService;
 import com.ayo.retrofit2.sample.rxjava.subscribers.SubscriberOnNextListener;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import com.cowthan.codeworld.Utils;
 
 public class Main {
 	
@@ -105,12 +102,7 @@ public class Main {
 			}
 		});
         
-        try {
-			Thread.sleep(6000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        Utils.sleep(6000);
     }
 
 	
