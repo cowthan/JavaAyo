@@ -31,6 +31,7 @@
 	<classpathentry kind="lib" path="libs-tools/sun.misc.BASE64Decoder.jar"/>
 	<classpathentry kind="lib" path="libs-tools/jimi.jar"/>
 	<classpathentry kind="lib" path="libs-tools/metadata-extractor-2.7.0.jar"/>
+	<classpathentry kind="lib" path="libs-tools/netty-all-4.0.26.Final.jar"/>
 	<classpathentry kind="src" path="src-nutz"/>
 	<classpathentry kind="src" path="src-qiniu"/>
 	<classpathentry kind="src" path="src-okhttp3"/>
