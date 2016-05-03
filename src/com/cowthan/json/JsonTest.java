@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import org.ayo.lang.JsonUtilsUseFast;
 
-import com.alibaba.fastjson.JSON;
+import com.cowthan.json.data.Bean;
+
 
 public class JsonTest {
 	public static void main(String[] args) {
-		//System.out.println(JSON.toJSONString(new PreOrderMessage()));
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("haha", "111");
@@ -16,8 +16,14 @@ public class JsonTest {
 		map.put("hahsdfsa", "11sfs1");
 		map.put("sdfsaf", "1dsafsd11");
 		
-		String s = JsonUtilsUseFast.toJson(map);
+		String s = JsonUtilsUseFast.toJson(new Bean());
 		System.out.println(s);
+		
+		//{"birth":1462270181596,"id":10,"isGirl":false,"name":"王二"}
+		String json = "{\"birth\":1462270181596,\"id\":10,\"isGirl\":false,\"name\":\"王二\"}";
+		Bean b = JsonUtilsUseFast.getBean(json, Bean.class);
+		System.out.println(b.birth);
+		
 	}
 	///{"createTime":"13232332","orderNum":"1122334","orderStatus":"1","portraiUri":"http://img3.imgtn.bdimg.com/it/u=3841520159,2387139296&fm=21&gp=0.jpg","tags":"","userId":"12313241234132"}
 

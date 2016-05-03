@@ -1,4 +1,4 @@
-package org.ayo.codeworld.entity;
+package com.cowthan.codeworld.entity;
 
 import java.util.List;
 

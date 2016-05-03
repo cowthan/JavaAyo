@@ -1,14 +1,12 @@
-package org.ayo.codeworld;
+package com.cowthan.codeworld;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.ayo.codeworld.entity.AyoResponseTimeline;
-import org.ayo.codeworld.entity.AyoTimeline;
-import org.ayo.codeworld.entity.AyoUser;
-
-
+import com.cowthan.codeworld.entity.AyoResponseTimeline;
+import com.cowthan.codeworld.entity.AyoTimeline;
+import com.cowthan.codeworld.entity.AyoUser;
 
 
 /**
