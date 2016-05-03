@@ -1,0 +1,1 @@
+依赖于com.j256.ormlite:ormlite-android:4.48
