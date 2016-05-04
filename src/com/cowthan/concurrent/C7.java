@@ -3,7 +3,6 @@ package com.cowthan.concurrent;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import cn.jpush.api.common.TimeUnit;
 
 public class C7 {
 	

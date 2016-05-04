@@ -16,8 +16,15 @@ new Thread(launch, "thread-1").start();
 
 一个线程承载了一个任务
 
-2 Java的线程管理：
 
+线程的状态：
+——new：已经创建完毕，且已经start，资源分配完毕，等待分配时间片了，这个状态只会持续很短的时间，下一步就会进入运行或者阻塞
+——run：就绪状态，只要给了时间片，就会运行，在任一时刻，thread可能运行也可能不运行
+——block：阻塞状态，程序本身能够运行，但有个条件阻止了它运行，调度器会忽略这个线程，直到跳出阻塞条件，重新进入就绪状态
+——dead：run()方法返回，或者被中断
+
+
+2 Java的线程管理：
 Executor：一个接口，其定义了一个接收Runnable对象的方法executor，其方法签名为executor(Runnable command)
 Executors：控制着一堆线程池
 
