@@ -20,7 +20,7 @@ public class JsonTest {
 		System.out.println(s);
 		
 		//{"birth":1462270181596,"id":10,"isGirl":false,"name":"王二"}
-		String json = "{\"birth\":1462270181596,\"id\":10,\"isGirl\":false,\"name\":\"王二\"}";
+		String json = "{\"birth\":1462270181596,\"id\":10,\"isGirl\":false,\"name\":\"王二\"}"; //,\"girlFriend\":\"\"
 		Bean b = JsonUtilsUseFast.getBean(json, Bean.class);
 		System.out.println(b.birth);
 		

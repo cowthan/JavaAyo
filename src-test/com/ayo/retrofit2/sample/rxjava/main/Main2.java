@@ -6,6 +6,9 @@ import com.ayo.retrofit2.sample.rxjava.entity.Subject;
 import com.ayo.retrofit2.sample.rxjava.http.MovieService;
 import com.cowthan.codeworld.Utils;
 
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+
 public class Main2 {
 	
 	public static void main(String[] args) {

@@ -2,11 +2,11 @@ package com.ayo.retrofit2.sample.rxjava.http;
 
 
 import java.util.List;
-import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import rx.Observable;
 
 import com.ayo.retrofit2.sample.rxjava.entity.HttpResult;
 import com.ayo.retrofit2.sample.rxjava.entity.Subject;

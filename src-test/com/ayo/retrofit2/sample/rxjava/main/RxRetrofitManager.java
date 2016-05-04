@@ -1,11 +1,13 @@
 package com.ayo.retrofit2.sample.rxjava.main;
 
-import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * 就我看吧，sample包下这个例子封装的并不好，没啥意思，所以我自己尝试一下有没有什么高大上的套路

@@ -1,4 +1,4 @@
-package sample.rxjava.main;
+package com.ayo.retrofit2.sample.rxjava.main;
 
 import javax.security.auth.Subject;
 
