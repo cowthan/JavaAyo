@@ -146,6 +146,8 @@ public int next() {
 ——可以尝试获取锁，不必非得阻塞在这
 ——提供了比synchronized更细粒度的控制
 ——在实现链表遍历节点时，有个节点传递的加锁机制（锁耦合），在释放这个节点的锁之前，必须捕获下个节点的锁
+——synchronized引起的阻塞无法被interrupt方法中断，但ReentrantLock提供了可以被中断的机制
+——ReentrantLock.lockInterruptly()：如果得不到锁（被其他地方占用），就会阻塞，但是这个阻塞可以被interrupt()
 
 例子：c8下AttemptLocking.java
 
@@ -261,9 +263,10 @@ public void run(){
 //如果能拿到Future，可以Future.cancel(true)来打断
 //exec.execute(Runnable)看来是打断不了了，因为拿不到什么引用
 //exec.submit()，还是能打断的，返回了Future
+//本质上都是调用了thread.interrupt()
 
 public void run(){
-	while(!Thread.currentThread().isInterrupt()){
+	while(!Thread.currentThread().isInterrupt()){   //或者用Thread.interrupted()判断
 		//do some seriers work
 	}
 }
@@ -275,19 +278,24 @@ public void run(){
 	}
 }
 
-终结情形3：
+终结情形3：终结不了
 在等待synchronized的线程，不可以被interrupt
 但是注意，Lock可以尝试获取锁，并可以指定阻塞等待锁的时间限制
 
-终结情形4：
+终结情形4：ReentrantLock.lockInterruptly()
+ReentrantLock.lockInterruptly()，在这里获取不到锁，会阻塞，但是可以被interrupt方法中断
+
+看例子c10.Interrupting2类
+
+终结情形5：
 在等待InputStream.read()的线程，不可以被interrupt
 但是有个笨办法：关闭线程正在等待的底层IO资源，如关闭Socket
 还有个更好的选择：nio，提供了更人性化的中断，被阻塞的nio通道会自动响应中断
 
 
-
-如果一个Runnable没有cancel类的标志位检查，也没有检查isInterrupt()，调用interrupt()会怎么地？
-
+注意：
+1 如果一个Runnable没有cancel类的标志位检查，也没有检查isInterrupt()，调用interrupt()会怎么地？
+2 线程被中断之后，会发异常，有时需要清理资源，参考类c10.InterruptingIdiom
 
 
 
@@ -310,6 +318,52 @@ CyclicBarrier
 DelayQueue
 PriorityBlockingQueue
 Exchanger
+
+-----------------------
+
+程序可能在某个地方必须等待另一个线程完成任务，如果用无限循环来检查，这叫忙等待，很耗CPU
+
+
+1 wait和notify，notifyAll
+
+obj.wait()和obj.notify()的作用：
+——释放obj上的锁，所以必须先持有锁了，通过synchronized
+——程序在这里开始阻塞，发出的信息就是：我在obj上等待，释放了obj的锁，并且等待notify
+——别的程序此时可以拿到obj上的锁了
+——notify也会先释放obj的锁，所以也得先拿到锁，obj.notify()会通知在obj上wait的对象
+——此时wait的地方会再拿到锁，继续往下执行
+
+c11.WaitLockTest类，总结：
+要从wait中恢复，也就是让wait返回，必须满足两个条件：
+——有人在同一个对象上notify过
+——同一对象的锁被释放
+——而notify也需要操作锁，所以也必须持有锁，但这个操作不是释放锁，也就是说notify之后，wait返回之前，还可以执行代码，只要在同步块里，这个时机就是锁释放之前
+
+一般用法是：
+
+在一个线程里：
+synchronized(obj){
+	while(condition不符合){
+		obj.wait(); //等到condition符合
+		//处理condition符合之后的逻辑
+	}
+}
+
+在另一个线程里：
+synchronized(obj){
+	///处理condition，让其符合条件
+	obj.notify();
+	//做些wait返回之前可能需要做的事
+	//锁在这准备释放了，wait复活的两个条件都满足了
+}
+
+
+可以接受时间参数的wait：
+——给wait个超时时间
+
+
+2 Condition，await和signal
+
 
 
 第十二课 Volatile

@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cn.jpush.api.common.TimeUnit;
 
 /**
  * 线程本地存储 
