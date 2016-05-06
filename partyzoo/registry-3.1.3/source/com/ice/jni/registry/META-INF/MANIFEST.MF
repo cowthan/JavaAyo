@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Created-By: "Tim Endres <time@gjt.org>"
+Main-Class: com.ice.jni.registry.Registry
+Class-Path: 
+
+Name: com/ice/jni/registry/Registry/
+Specification-Title: "JNI Registry - Windows Registry Package" 
+Specification-Version: "3.1.3"
+Specification-Vendor: "ICE Engineering, Inc.".
+Implementation-Title: "com.ice.jni.registry.Registry" 
+Implementation-Version: "3.1.3"
+Implementation-Vendor: "ICE Engineering, Inc."
