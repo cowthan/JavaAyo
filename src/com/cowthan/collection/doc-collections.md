@@ -337,7 +337,74 @@ Dict中，get方法是在数组中遍历，线性查找，HashMap用的是散列
     * java中的支持就是hashCode()方法
     * 所以Dict需要考虑给key生成散列码之后，怎么根据散列存储和快速访问
 
+一个可以作为key的类型定义，需要考虑hashCode()和equals()两个方法
+参考hash.Groundhog这个类
 
+先得考虑equals，然后equals相等的两个对象，hashCode()也应该相等
+Map里会根据equals来确保键不重复
+
+
+Object默认的equals比较的是对象地址
+Object默认的hashCode也是基于对象地址
+
+* equals方法要满足的5个条件：
+    * 自反性：x.equals(x)，一定返回true
+    * 对称性：x.equals(y)的结果一定等于y.eqauls(x)
+    * 传递性：x.equals(y)为true，y.equals(z)为true，则x.equals(z)一定为true
+    * 一致性：多次调用，只要等价信息没变，返回结果一致
+    * 有一个是null，结果就是false
+
+* hashCode方法：
+    * 并不需要总是能够返回唯一的标识码，这个可能不好理解
+    * 首先要知道，哈希值应该依赖于对象的标识性字段，一般情况下，不能依赖于可变字段
+        * 这里你要考虑的问题就是：如果一个字段值变了，你希望哈希值也跟着变吗
+    * 生成哈希只并不追求唯一性，应该更追求速度
+    * 哈希值如果不唯一，注意，有个桶位的概念，即哈希值对应的下标处，存的其实是个List，这个就是桶位
+        * 至于是什么类型的List或者数组，后面看源码
+        * List的元素类型，其实是entry
+        * 桶位在这就暂时叫做BucketList吧，对应的是一个哈希作为下标取出的几个值
+    * 即使哈希值唯一，放到Map里时，Map的底层数组大小也是有限定的，所以需要对哈希再处理
+        * 例如Map底层数组设置为100个，你的哈希值是200，就得把200映射到100范围之内，
+        * 最直观的方法是取余，但取余也是个耗时操作
+    * 通过哈希值，拿到BucketList之后，还会通过key的equals方法找到最终确定的Value
+
+* 结论：
+    * hashCode要的是速度，不是唯一性，不过hashCode的值应该是均匀的，避免值都集中在一个区域内
+    * 当然既有速度，又有唯一性，是很完美的，如果值的个数固定，map底层数组大小也就固定，完美哈希是有可能的
+    * EnumSet和EnumMap就实现了完美哈希
+    * Key的类型必须仔细定义hashCode和equals方法，使二者能唯一确定一个对象
+    * 所以这又回到那个话题：空间换时间
+    * 如果知道Value就是100个，怎么办呢，更一般的，要把一个List放到Map里，map可以怎么优化？
+        * 参考linkedIn的优化：new HashMap(Math.ceiling(list.size() 乘 0.7))
+        * 0.7在这里是负载因子
+
+* 经验
+    * equals中用到字段，一般也应该用于生成hashCode
+    * 生成hashCode的一个公式，引自effecttive java
+        * 定义个int result = 17
+        * 对于每一个有意义的字段，计算出一个int c
+        * 对result和每一个c：result = 37 x result + c
+        * 各种字段f对应的c怎么计算：
+            * boolean：c = f ? 1 : 0
+            * byte char short int：c = (int)f
+            * long：c = (int)(f^(f>>>32))
+            * float：c =  Float.floatToIntBits(f)
+            * double：long l = Double.doubleToLongBits(f)，回到long
+            * Object：c = f.hashCode()
+            * 数组：对每个元素应用此规则
+
+public class Student{
+	public int id;
+	public String name;
+	
+	public int hashCode(){
+		int result = 17;
+		result = 37*result + name.hashCode();
+		result = 37*result + id;
+		return result;
+	}
+
+}
 
 
 
@@ -422,7 +489,14 @@ for(Map.Entry entry: map.entrySet()){
 }
 
 
-9 多线程支持
+9 Collections提供的便利方法
+
+
+10 数组
+
+
+
+11 多线程支持
 
 
 ###List支持：CopyOnWriteArrayList
@@ -443,7 +517,7 @@ HashTable被废弃了
 
 11 EnumSet和EnumMap
 
-
+完美哈希，因为Enum值个数固定
 
 
 

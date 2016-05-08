@@ -9,6 +9,11 @@ Looper和Handler高仿
 
 ==================================
 
+alert，toast风格的提示框：
+src-twinkle：一个基于swing的桌面版的notify框
+src-jcommunique：也是一个基于swing的桌面版的notify框
+
+==================================
 
 src==>com.cowthan：学习用，小工具，或者对一些东西的测试，如极光，加密解密，csv读写等，设计模式和排序算法的学习笔记也在里面
 对应的lib应该在lib-tools下找

@@ -220,6 +220,8 @@ public static class ThreadLocalVariableHolder{
 有些任务会在循环中检查状态值，如canceled之类的，会自己退出任务
 但有时我们需要任务更突然的终止任务
 
+注意：如果有标志位canceled，isRunning等，这个一般是volatile的
+
 FutureTask提供的取消应该就是这种情况
 
 ##2 阻塞时终止
@@ -287,7 +289,7 @@ ReentrantLock.lockInterruptly()，在这里获取不到锁，会阻塞，但是�
 
 看例子c10.Interrupting2类
 
-终结情形5：
+终结情形5：IO密集型阻塞
 在等待InputStream.read()的线程，不可以被interrupt
 但是有个笨办法：关闭线程正在等待的底层IO资源，如关闭Socket
 还有个更好的选择：nio，提供了更人性化的中断，被阻塞的nio通道会自动响应中断
@@ -295,8 +297,10 @@ ReentrantLock.lockInterruptly()，在这里获取不到锁，会阻塞，但是�
 
 注意：
 1 如果一个Runnable没有cancel类的标志位检查，也没有检查isInterrupt()，调用interrupt()会怎么地？
-2 线程被中断之后，会发异常，有时需要清理资源，参考类c10.InterruptingIdiom
-
+    * 参考c10.NothingToInterrupt，是关不掉的，但这种形式的无限循环，一般不会出现在真实场景里
+    * 真实场景什么样？一般是一个无限循环，但里面会阻塞（等待条件成熟），有跳出条件
+2 线程被中断之后，会发异常InterrupttedException，有时需要清理资源，参考类c10.InterruptingIdiom
+	
 
 
 第十一课 线程通信，线程协作
@@ -324,8 +328,10 @@ Exchanger
 程序可能在某个地方必须等待另一个线程完成任务，如果用无限循环来检查，这叫忙等待，很耗CPU
 
 
-1 wait和notify，notifyAll
+##1 wait和notify，notifyAll
 
+
+###（1）简介
 obj.wait()和obj.notify()的作用：
 ——释放obj上的锁，所以必须先持有锁了，通过synchronized
 ——程序在这里开始阻塞，发出的信息就是：我在obj上等待，释放了obj的锁，并且等待notify
@@ -333,21 +339,34 @@ obj.wait()和obj.notify()的作用：
 ——notify也会先释放obj的锁，所以也得先拿到锁，obj.notify()会通知在obj上wait的对象
 ——此时wait的地方会再拿到锁，继续往下执行
 
-c11.WaitLockTest类，总结：
+c11.Test类，总结：
 要从wait中恢复，也就是让wait返回，必须满足两个条件：
 ——有人在同一个对象上notify过
 ——同一对象的锁被释放
 ——而notify也需要操作锁，所以也必须持有锁，但这个操作不是释放锁，也就是说notify之后，wait返回之前，还可以执行代码，只要在同步块里，这个时机就是锁释放之前
 
+###（2）套路
 一般用法是：
 
 在一个线程里：
 synchronized(obj){
 	while(condition不符合){
 		obj.wait(); //等到condition符合
-		//处理condition符合之后的逻辑
+	}
+	//处理condition符合之后的逻辑
+}
+
+----
+注意，这里有个有缺陷的wait的用法
+while(condition不符合){
+	//Point-1：在这里，
+	）线程可能切换了，切到另一个线程，并且导致了condition符合了（并notify，但此时这里并未，然后切换回来，wait了，就死锁了
+	synchronized(obj){
+		obj.wait(); 
 	}
 }
+
+----
 
 在另一个线程里：
 synchronized(obj){
@@ -358,12 +377,125 @@ synchronized(obj){
 }
 
 
+
+
 可以接受时间参数的wait：
 ——给wait个超时时间
 
 
-2 Condition，await和signal
+例子：c11.WaxOMatic
+例子很好的说明了wait和notify怎么用
 
+* 总结：
+    * 这个例子有点太场景化，也就是太特殊，如果要用同步队列来实现：
+    * 上蜡和抛光可以看做是两条流水线，并且原则是：一条流水线处理一个队列里的消息
+    * 等待上蜡的队列，等待抛光的队列，而两条流水线，就变成了在queue.take()或者poll()时阻塞，思路就清楚多了
+    * 但是注意，不是所有的业务模型都可以映射到队列模型
+
+###（3）为什么要在while(true)里wait
+* 再说notifyAll和while(true){wait();}的问题
+	* 一个或多个任务在一个对象上等待同一个条件，不管谁被唤醒之后，条件可能已经改变了，所以wait醒来之后还是要对条件进行检查
+	* 在一个对象上wait的线程可能有多个，而且可能是针对不同的条件，所以被唤醒之后，需要检查一下是否自己需要的条件
+	* 总之，wait醒来之后，需要检查自己需要的条件是否满足，不满足的话还得继续wait
+	* 所以，在while(true)中wait通常是比较合理的做法
+		* notify只能唤醒一个
+
+
+###（4）notify和notifyAll的区别
+
+没整明白呢
+
+
+
+##2 Condition，await和signal
+
+参考c11.WaxOMatic2.java
+
+
+和这里要用到的锁就是ReentranLock
+
+
+
+##3 同步队列：接口BlockingQueue
+
+总而言之，同步队列可以使很多业务模型得以简化，处理问题的思路更简单
+
+java提供了大量的BlockingQueue接口的实现，例子参考BlockingQueueTest
+
+public interface BlockingQueue<E> extends Queue<E> {
+		
+	/**
+	 * 添加，如果没有空间，会阻塞等待
+	 * @param e
+	 * @throws InterruptedException
+	 */
+	void put(E e) throws InterruptedException;
+	
+	/**
+     * 移除并返回，如果empty，则阻塞等待
+     */
+    E take() throws InterruptedException;
+    
+    /**
+     * 移除并返回，如果empty，会等待指定时间
+     * @param timeout
+     * @param unit
+     * @return
+     */
+    E poll(long timeout, TimeUnit unit);
+    
+    /**
+     * Returns the number of additional elements that this queue can ideally
+     * (in the absence of memory or resource constraints) accept without
+     * blocking, or {@code Integer.MAX_VALUE} if there is no intrinsic
+     * limit.
+     *
+     * <p>Note that you <em>cannot</em> always tell if an attempt to insert
+     * an element will succeed by inspecting {@code remainingCapacity}
+     * because it may be the case that another thread is about to
+     * insert or remove an element.
+     *
+     * @return the remaining capacity
+     */
+    int remainingCapacity();
+    
+    public boolean contains(Object o);
+    
+    /**
+     * 把队列里的元素都移到Collection里
+     * @param c
+     * @return
+     */
+    int drainTo(Collection<? super E> c);
+    int drainTo(Collection<? super E> c, int maxElements);
+    
+}
+
+java.util.concurrent.BlockingQueue<Message> queue = 
+			//new ArrayBlockingQueue<BlockingQueueTest.Message>(10, true); //true是access policy，表示FIFO，先进先出
+			//new LinkedBlockingDeque<BlockingQueueTest.Message>(10);
+			//new DelayQueue<BlockingQueueTest.Message>();
+			//new PriorityBlockingQueue<BlockingQueueTest.Message>();
+			//new SynchronousQueue<BlockingQueueTest.Message>(true);
+			//new LinkedTransferQueue<BlockingQueueTest.Message>();
+
+常规：			
+ArrayBlockingQueue
+LinkedBlockingDeque
+
+延迟队列：
+DelayQueue
+
+优先级队列
+PriorityBlockingQueue
+
+不懂的队列：
+SynchronousQueue
+LinkedTransferQueue
+
+##4 管道：PiperWriter和PiperReader
+
+这个io在read上的阻塞是可以interrupt的，与之相比，System.in.read()就不可中断
 
 
 第十二课 Volatile
@@ -444,8 +576,9 @@ public abstract class IntGenerator {
 
 
 
-第十四课 
+第十四课 java提供的并发构件
 ============================
+
 
 
 
