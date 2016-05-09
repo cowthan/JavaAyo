@@ -418,6 +418,9 @@ synchronized(obj){
 
 ##3 同步队列：接口BlockingQueue
 
+
+###（1） 简介
+
 总而言之，同步队列可以使很多业务模型得以简化，处理问题的思路更简单
 
 java提供了大量的BlockingQueue接口的实现，例子参考BlockingQueueTest
@@ -492,6 +495,122 @@ PriorityBlockingQueue
 不懂的队列：
 SynchronousQueue
 LinkedTransferQueue
+
+###（2）例子
+
+
+####例子1：PriorityQueue，优先级队列
+
+代码：c11.PriorityQueueDemo.java
+
+* 简介：
+	* 基于优先级，优先级的排序规则，由你来实现，就是实现方法compareTo
+	* 用到了add和take方法，和take配对的不是put吗
+	* 队列的元素类型Task，必须实现Comparable来对优先级进行排序，以保证按优先级顺序来
+
+PriorityBlockingQueue代码1000多行呢
+
+
+####例子2：DelayQueue，延迟队列
+
+代码：c11.DelayQueueDemo.java
+
+* 要点：
+	* 队列的元素类型：需要实现Delayed接口，包括getDelay()和compareTo()两个方法
+	* getDlay决定了任务是否到时可以运行
+	* compareTo决定了队列会排序，并且队列头就是第一个应该被运行的任务
+	
+
+
+* 带着问题看代码：
+	* 普通队列在take()这里阻塞，有新任务put进来，则被唤醒，所以只要有任务，就不会阻塞
+	* DelayQueue即使有消息，也会阻塞，表示任务都没到时间，这种阻塞，何时被唤醒？
+		* DelayQueue内部有个PriorityQueue
+		* 参考下面的代码，就是DelayQueue的take方法实现
+			* 取出队列头（peek，看看，不删除）
+			* 如果是null，说明队列空，则Condition.await()
+			* 如果不空，则根据任务的int delay = getDelay()方法，计算出delay时间，即多久之后任务可运行
+				* 注意队列是根据你实现的compareTo排好序的，队列头就应该是第一个可以被运行的任务
+				* getDelay()方法也是你实现的，在任务内部，你要记录延时时间（时间间隔），触发时间（具体时刻，计算出来并存好），所以随时随刻你都可以在getDelay()方法中计算出任务多久之后应该被触发
+				* 如果delay <= 0，就返回(queue.poll())，任务可以执行了
+				* 如果delay > 0，说明还没到时，则Condition.awaitNanos(delay)，阻塞指定时间后，再开始新一轮for循环，此时队列头的任务应该到时了
+				* leader不知道是干啥的啊，先当成一直是null来理解的
+	* ReentrantLock决定了多个线程在队列上take时，同一时刻只有一个线程会进入，所以只会有一个线程在await上阻塞，其他会在ReentrantLock上阻塞
+
+```java
+public E take() throws InterruptedException {
+    final ReentrantLock lock = this.lock;
+    lock.lockInterruptibly();
+    try {
+        for (;;) {
+            E first = q.peek();
+            if (first == null)
+                available.await();
+            else {
+                long delay = first.getDelay(NANOSECONDS);
+                if (delay <= 0)
+                    return q.poll();
+                first = null; // don't retain ref while waiting
+                if (leader != null)
+                    available.await();
+                else {
+                    Thread thisThread = Thread.currentThread();
+                    leader = thisThread;
+                    try {
+                        available.awaitNanos(delay);
+                    } finally {
+                        if (leader == thisThread)
+                            leader = null;
+                    }
+                }
+            }
+        }
+    } finally {
+        if (leader == null && q.peek() != null)
+            available.signal();
+        lock.unlock();
+    }
+    }
+```
+
+
+######
+`Thread leader`的作用：没明白
+Thread designated to wait for the element at the head of
+the queue.  This variant of the Leader-Follower pattern
+(http://www.cs.wustl.edu/~schmidt/POSA/POSA2/) serves to
+minimize unnecessary timed waiting.  When a thread becomes
+the leader, it waits only for the next delay to elapse, but
+other threads await indefinitely.  The leader thread must
+signal some other thread before returning from take() or
+poll(...), unless some other thread becomes leader in the
+interim.  Whenever the head of the queue is replaced with
+an element with an earlier expiration time, the leader
+field is invalidated by being reset to null, and some
+waiting thread, but not necessarily the current leader, is
+signalled.  So waiting threads must be prepared to acquire
+and lose leadership while waiting.
+
+
+###（3）更多
+
+* 一些实践中的应用
+    * 安卓的Looper和Handler可以作为一个通用的
+    * UI框架的大循环，是一个阻塞式的，循环处理的其实是UI上用户操作产生的事件，界面不会频繁刷新
+    * 游戏框架的大循环，是一个非阻塞式的，每一轮循环必须完成刷新界面的操作，也必须处理用户的输入和游戏逻辑，并且有被限制的帧率
+    * 有些特定的业务模型，可以用队列来简化，如抢单：（本来打算写写抢单逻辑，但发现单单从同步队列来考虑还不够）
+    	* Model层的repo负责存储订单，提供增删改查操作，并对外通过事件总线发出通知
+        * 线程A负责接收服务器来的订单消息，repo.add()
+        * 线程B负责不断遍历所有订单，在后台刷新每个订单的倒计时等恒变状态，并调用repo.update(), repo.delete()
+        * 主线程负责：思路断了
+        * 重新调整思路：
+        	* Model层不变
+        	* 线程A不变
+        	* 现在说谁能改变订单状态：
+        		* 后台任务，主要是各种倒计时
+        		* 用户操作
+        	* 编不下去了
+
 
 ##4 管道：PiperWriter和PiperReader
 
@@ -580,7 +699,64 @@ public abstract class IntGenerator {
 ============================
 
 
+##1 CountDownLatch
 
+参考：c11.CountDownLatchDemo.java
+
+* 适用于：
+	* 一组子任务并行执行，另一组任务等待着一组完成才进行，或等待某个条件完成才进行
+		* 并行执行的任务数，或者等待的这个条件，可以抽象成倒数，倒数到0，则另一组任务就可以继续执行
+    * 一个任务会被分解成多个子任务x，y，z
+    * 其中一个子任务B会等待其他几个子任务完成才会继续执行
+    * 所以提供一个CountDownLatch对象，并设置初始值
+    	* 任务B在CountDownLatch对象上await：latch.await();
+    	* 每完成一个子任务，就在CountDownLatch对象上倒数一次：latch.countDown();
+		* 直到倒数到0，await的对象就会被唤醒
+		* 任务B可以有多个
+
+* 限制：
+	* 只能用一次，如果要用多次，参考CyclicBarrier
+
+
+##2 CyclicBarrier
+
+例子参考：赛马模拟，c11.CyclicBarrierDemo.java
+
+* 适用于：
+    * 某个人物要等待多个任务并行进行，直到都完成，才会执行
+    * 可以重用
+    * 不得不说，CyclicBarrier还有点不好理解，看了demo代码还是没整明白
+    	* 怎么是horse在barrier上await呢
+    	* CyclicBarrier构造怎么还得传入必须await的线程个数呢
+
+* 介绍
+	* 构造：barrier = new CyclicBarrier(n, new Runnable(){})
+		* 参数1：计数值，当有线程在barrier上await时，计数减一，n个线程都await了，计数就成0了，栅栏动作就会执行
+		* 参数2：叫做栅栏动作，计数到0时，会自动执行
+
+* CyclicBarrierDemo讲解：
+	* 栅栏动作做的事情是：
+		* 打印线路，打印终点
+		* 打印每匹马当前的位置
+		* 判断是否有马走到终点，有则提示夺冠，并结束所有线程（shutdownNow)
+	* 栅栏动作执行完后，计数又会重置，此时
+		* 每匹马再向前走一步，距离是随机数
+		* 走完之后，await一下
+		* 所有马都走完一步，await倒数计数值又是0了，再激活栅栏动作
+	* 如此循环
+	* 所以，栅栏动作等所有子任务都await了，才运行，此时所有子任务都阻塞，子任务等栅栏动作完成，计数自动重置，再被唤醒
+
+* 总结：
+	* 构造时，传入计数值和栅栏动作
+	* 计数值减一操作由子任务的await完成
+	* 栅栏动作在计数值为0时激活，并且运行完会自动重置计数值，并唤醒await的线程们
+
+
+* 更多：
+	* 思考：如果没有CyclicBarrier，仿真赛马你会怎么实现？
+	* 你的实现会考虑起始和终结的情况吗？宣布夺冠之后，所有的马都能立即停止前进吗？统计开始和结束时，所有马的状态保持前后一致吗？
+	* 提示1：CyclicBarrier的子任务，会在await上等待栅栏动作的结束，并且await是可以被interrupt的
+	* 提示2：赛场统计是由栅栏动作完成的，此动作会在每一批马都前进一步之后，所有马都await，栅栏动作开始统计
 
 
 第十五课 示例

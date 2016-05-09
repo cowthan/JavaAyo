@@ -13,12 +13,27 @@ alert，toast风格的提示框：
 src-twinkle：一个基于swing的桌面版的notify框
 src-jcommunique：也是一个基于swing的桌面版的notify框
 
+一个平台无关的UI库：BeautyEye
+https://github.com/JackJiang2011/beautyeye
+好像还可以构件安卓界面，希望你思想也是仿安卓的
+——比想象的差
+
+SmartInvoke，也是一个UI库，好像还提供了更多访问硬件的功能
+http://www.oschina.net/p/invokeui
+——好像是给flash用的
+
+FengGUI，基于OpenGL的GUI框架，可以学习OpenGL用
+http://www.oschina.net/p/fenggui
+——没看
+
 ==================================
 
 src==>com.cowthan：学习用，小工具，或者对一些东西的测试，如极光，加密解密，csv读写等，设计模式和排序算法的学习笔记也在里面
 对应的lib应该在lib-tools下找
 
 部分测试代码放到了src-test下，包括nutz，qiniu，retrofit，rxjava，这里的代码就截止于2016/5/3，不再往里加了，都应该放到com.cowthan下
+
+
 
 1 csv读写
 
