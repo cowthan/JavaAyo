@@ -20,6 +20,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	    * [ClassLoader==>字节码，apk]
 	    * [Socket==>openfire==>netty]
 	    * [Json]
+	    * [xml==>webservice]
 	    * [Rxjava]
 	    * [Okhttp]
 	    * [Retrofit]
@@ -29,6 +30,11 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	    * [java GUI]
 	    	* [twinkle]
 	    	* [jcommunique]
+	    * [java OpenGL：JOGL](http://blog.csdn.net/sidihuo/article/details/44034465)
+	    * [java cocos2d：CDK]
+	    	* cdk：(http://www.tuicool.com/articles/NNJbyu)
+	    	* cdk2：(https://github.com/makeapp/cocoseditor-java-samples)
+	    	* gdx版
 	* [工具]
 		* [命令行]
 		* [csv读写]
@@ -36,7 +42,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 		* [gif生成和拆分]
 		* [exif读写]
 		* [keystore分析和签名]
-		* [RSA公钥私钥]
+		* [加密解密](http://tool.oschina.net/encrypt)
 	* [算法学习]
 		* [排序]
 		* [先选本教材]
@@ -45,13 +51,18 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	* [第三方]
 		* [极光：推送]
 		* [七牛：文件云存储]
+		* [微信开放平台]
+		* [微信公众号]
+		* [微博]
 	* [项目用]
 		* [CodeWorld]
 	* [安卓]
 		* [仿安卓底层：学习用]
+			* [仿Looper，Handler](./doc/looper.md)
+			* [仿AsyncTask]
 		* [安卓代码生成器]
 	* [其他]
-		* markdown语法
+		* [markdown语法](./README)
 
 ================================
 

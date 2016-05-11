@@ -251,6 +251,10 @@ windows-1253: cp1253, cp5349
 
 ####（5）各种Buffer
 
+ByteBuffer系列的类继承关系挺有意思，可以研究研究
+
+ByteArrayBuffer是其最通用子类，一般操作的都是ByteArrayBuffer
+
 ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 
 
@@ -274,8 +278,70 @@ ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 ![](./img/nio1.png)
 
 
-####（7）
+####（7）字节序
 
+* 简介：
+	* 高位优先，Big Endian，最重要的字节放地址最低的存储单元，ByteBuffer默认以高位优先，网络传输大部分也以高位优先
+	* 低位优先，Little Endian
+	* ByteBuffer.order()方法切换字节序
+		* ByteOrderr.BIG_ENDIAN
+		* ByteOrderr.LITTLE_ENDIAN
+	* 对于00000000 01100001，按short来读，如果是big endian，就是97， 以little endian，就是24832
+
+
+#### （8）缓冲器细节：四大索引
+
+* 四大索引：
+	* mark：标记，mark方法记录当前位置，reset方法回滚到上次mark的位置
+	* position：位置，当前位置，读和写都是在这个位置操作，并且会影响这个位置，position方法可以seek
+	* limit：界限，
+	* capacity：容量
+
+#####
+对应的方法：
+![](./img/nio2.png)
+
+#####
+```java
+public final Buffer flip() {
+    limit = position;
+    position = 0;
+    mark = UNSET_MARK;
+    return this;
+}
+
+public final Buffer rewind() {
+    position = 0;
+    mark = UNSET_MARK;
+    return this;
+}
+
+public final boolean hasRemaining() {
+    return position < limit;
+}
+
+public final Buffer clear() {
+    position = 0;
+    mark = UNSET_MARK;
+    limit = capacity;
+    return this;
+}
+
+
+public final Buffer mark() {
+    mark = position;
+    return this;
+}
+
+public final Buffer reset() {
+    if (mark == UNSET_MARK) {
+        throw new InvalidMarkException("Mark not set");
+    }
+    position = mark;
+    return this;
+}
+
+```
 
 
 ###2 异步IO
