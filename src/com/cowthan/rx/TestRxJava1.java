@@ -1,4 +1,4 @@
-package com.ayo.rxjava;
+package com.cowthan.rx;
 
 import rx.Observable;
 import rx.Subscriber;

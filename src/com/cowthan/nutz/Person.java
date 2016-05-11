@@ -1,4 +1,4 @@
-package com.ayo.nutzdb;
+package com.cowthan.nutz;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;

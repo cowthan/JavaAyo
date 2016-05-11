@@ -1,4 +1,4 @@
-package com.ayo.rxjava;
+package com.cowthan.rx;
 
 import java.util.ArrayList;
 import java.util.List;
