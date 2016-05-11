@@ -1,4 +1,4 @@
-package com.ayo.qiniu;
+package com.cowthan.qiniu;
 
 import java.io.File;
 import java.util.ArrayList;

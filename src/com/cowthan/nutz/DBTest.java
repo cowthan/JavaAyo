@@ -1,4 +1,4 @@
-package com.ayo.nutzdb;
+package com.cowthan.nutz;
 
 import java.util.HashMap;
 import java.util.List;

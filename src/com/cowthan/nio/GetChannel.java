@@ -42,6 +42,7 @@ public class GetChannel {
 			System.out.print((char) buff.get());
 		}
 		
+		
 	}
 } /*
  * Output: Some text Some more

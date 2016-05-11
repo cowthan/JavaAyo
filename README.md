@@ -3,6 +3,70 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 实际上有什么好代码都可以加进来，直到这个工程不堪其重
 ----------------------------------
 
+
+目录：
+================
+
+* 目录
+	* [java高级]
+		* [Ayo库]
+	    * [nio==>okio==>netty](./doc/doc-nio.md)
+	    * [并发==>concurrency]
+	    	* [第一部分](./doc/doc-concurrent.md)
+	    	* [第二部分](./doc/doc-concurrent2.md)
+	    * [集合==>guava](./doc/doc-collections.md)
+	    * [注解==>依赖注入dagger]
+	    * [反射==>有啥反射的增强库吗]
+	    * [ClassLoader==>字节码，apk]
+	    * [Socket==>openfire==>netty]
+	    * [Json]
+	    * [xml==>webservice]
+	    * [Rxjava]
+	    * [Okhttp]
+	    * [Retrofit]
+	    * [Guava]
+	    * [数据库访问：原生==>nutz==>其他]
+	    	* [数据库优化]
+	    * [java GUI]
+	    	* [twinkle]
+	    	* [jcommunique]
+	    * [java OpenGL：JOGL](http://blog.csdn.net/sidihuo/article/details/44034465)
+	    * [java cocos2d：CDK]
+	    	* cdk：(http://www.tuicool.com/articles/NNJbyu)
+	    	* cdk2：(https://github.com/makeapp/cocoseditor-java-samples)
+	    	* gdx版
+	* [工具]
+		* [命令行]
+		* [csv读写]
+		* [java环境变量设置：windows]
+		* [gif生成和拆分]
+		* [exif读写]
+		* [keystore分析和签名]
+		* [加密解密](http://tool.oschina.net/encrypt)
+	* [算法学习]
+		* [排序]
+		* [先选本教材]
+	* [设计模式]
+		* [pattern1包里]
+	* [第三方]
+		* [极光：推送]
+		* [七牛：文件云存储]
+		* [微信开放平台]
+		* [微信公众号]
+		* [微博]
+	* [项目用]
+		* [CodeWorld]
+	* [安卓]
+		* [仿安卓底层：学习用]
+			* [仿Looper，Handler](./doc/looper.md)
+			* [仿AsyncTask]
+		* [安卓代码生成器]
+	* [其他]
+		* [markdown语法](./README)
+
+================================
+
+
 src==>android：这里是仿安卓系统的东西，学习安卓原理用，注意，本工程里引入了android-4.1.1.4，忘了给okhttp还是rxjava还是retrofit用的了，自己仿安卓代码时，可能有些类你没写，但已经引进来了，所以建议不要使用原生安卓包名
 
 Looper和Handler高仿

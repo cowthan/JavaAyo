@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-qiniu"/>
+	<classpathentry kind="src" path="src-nutz"/>
+	<classpathentry kind="src" path="src-okhttp3"/>
+	<classpathentry kind="src" path="src-okhttp3-ws"/>
 	<classpathentry kind="src" path="src-rxjava"/>
 	<classpathentry kind="src" path="src-test"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="src-twinkle"/>
 	<classpathentry kind="src" path="src-jcommunique"/>
+	<classpathentry kind="src" path="src-retrofit"/>
+	<classpathentry kind="src" path="src-retrofit-sample"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src-nutz"/>
 	<classpathentry kind="src" path="src-qiniu"/>
@@ -39,5 +45,6 @@
 	<classpathentry kind="lib" path="libs-tools/netty-all-4.0.26.Final.jar"/>
 	<classpathentry kind="lib" path="libs-tools/org.apache.commons.lang.jar"/>
 	<classpathentry kind="lib" path="libs-tools/sun.misc.BASE64Decoder.jar"/>
+	<classpathentry kind="lib" path="libs-tools/msgpack-core-0.8.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

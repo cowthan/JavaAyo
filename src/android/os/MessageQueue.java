@@ -281,6 +281,9 @@ public final class MessageQueue {
                 final long now = SystemClock.uptimeMillis();
                 Message prevMsg = null;
                 Message msg = mMessages;
+                
+                //一般不会发生msg.target == null的情况吧，毕竟在应用层面上，你只能通过Handler.sendMessage()
+                //难道是直接Looper.queue.enqueueMessage(msg) ？？？
                 if (msg != null && msg.target == null) {
                     // Stalled by a barrier.  Find the next asynchronous message in the queue.
                     do {
@@ -289,11 +292,13 @@ public final class MessageQueue {
                     } while (msg != null && !msg.isAsynchronous());
                 }
                 if (msg != null) {
+                	//when: enqueueMessage()时，会根据你设置的delay时间给其赋值
+                	//未到时，block住，阻塞一会
                     if (now < msg.when) {
                         // Next message is not ready.  Set a timeout to wake up when it is ready.
                         nextPollTimeoutMillis = (int) Math.min(msg.when - now, Integer.MAX_VALUE);
                     } else {
-                        // Got a message.
+                        // Got a message：到时了，msg可以被处理了，而且要注意Message还有个next结点，可以形成一个链表，其实这就是所有Message存储的地方，一个普通链表
                         mBlocked = false;
                         if (prevMsg != null) {
                             prevMsg.next = msg.next;
