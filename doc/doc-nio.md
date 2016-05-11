@@ -133,9 +133,13 @@ public class GetChannel {
 
 ```
 
-####（2）更多：flip, clear操作
+####（2）更多：flip, clear和mark，reset操作
 
-* 更多
+* flip，clear和mark，reset
+	* 这里说的读写都是相对于ByteBuffer
+	* 由写转读：flip
+	* 由写转读：clear
+	* 随机读写：mark和reset，如果要一会写一会读，mark会记录当前position，position就是读写的起点，reset会回滚
 	* ByteBuffer.allocate(len)的大小问题，大块的移动数据是快的关键，所以长度很重要，但没啥标准，根据情况定吧，1024（1K）小了
 	* ByteBuffer.wrap(byte[])，不会再复制数组，而是直接以参数为底层数组，快
 	* 复制文件时，一个ByteBuffer对象会不断从src的channel来read，并写入dest的channel，注意：
@@ -152,6 +156,8 @@ while(src.read(buff) != -1){
 	buff.clear(); //其实这才是真正的卸车，并送回通道那头（可以再次read(buff)了）
 }
 ```
+
+
 
 ####（3）连接通道
 
@@ -295,7 +301,12 @@ ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 	* mark：标记，mark方法记录当前位置，reset方法回滚到上次mark的位置
 	* position：位置，当前位置，读和写都是在这个位置操作，并且会影响这个位置，position方法可以seek
 	* limit：界限，
-	* capacity：容量
+		* 作为读的界限时：指到buffer当前被填入了多少数据，get方法以此为界限，
+			* flip一下，limit才有值，指向postion，才能有个读的界限
+		* 作为写的界限时：
+			* allocate或者clear时，直接可写，limit指向capacity，表示最多写到这
+			* wrap时，直接可读，所以position是0，limit是指到之后，capacity也是指到最后，直接进入可读状态
+	* capacity：容量，指到buffer的最后
 
 #####
 对应的方法：
@@ -342,6 +353,104 @@ public final Buffer reset() {
 }
 
 ```
+
+例子：交换相邻的两个字符
+```java
+/**
+ * 给一个字符串，交换相邻的两个字符
+ */
+private static void symmetricScramble(CharBuffer buffer) {
+	while (buffer.hasRemaining()) {
+		buffer.mark();
+		char c1 = buffer.get();
+		char c2 = buffer.get();
+		buffer.reset();
+		buffer.put(c2).put(c1);
+	}
+}
+
+/*
+思考：如果没有mark和reset功能，你怎么做？用postion方法记录和恢复刚才位置
+*/
+private static void symmetricScramble2(CharBuffer buffer) {
+	while (buffer.hasRemaining()) {
+		int position = buffer.position();
+		char c1 = buffer.get();
+		char c2 = buffer.get();
+		buffer.position(position);
+		buffer.put(c2).put(c1);
+	}
+}
+```
+
+* 总结：
+	* flip：一般用于由写转读，flip之后可以：
+		* 读：是从头读，能读到刚才写的长度
+		* 写：是从头写，会覆盖刚才写入的内容
+	* clear：一般用于读转写，clear之后可以：
+		* 读：但是读不到什么了
+		* 写：是从头写
+	* mark和reset：一般用于读写交替
+		* mark：相当于int postion = buffer.postion()，记下当前位置
+		* reset：相当于buffer.postion(position)，回到刚才记录的位置 
+
+####（9）内存映射文件：大文件的读写
+
+大文件，如2G的文件，没法一下加载到内存中读写
+
+MappedByteBuffer提供了一个映射功能，可以将文件部分载入到内存中，但你使用时，
+感觉文件都在内存中了
+
+MappedByteBuffer继承了ByteBuffer，所以可以像上面那样使用
+
+MappedByteBuffer性能很高，远高于FileInputStream，FileOutputStream，RandomAccessFile的原始方式的读写，百倍速度
+
+```java
+public static void main(String[] args) throws Exception {
+		
+	//创建个文件，大小是128M
+	MappedByteBuffer out = new RandomAccessFile("test.dat", "rw")
+			.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, length);
+	
+	//写入
+	for (int i = 0; i < length; i++)
+		out.put((byte) 'x');
+	
+	System.out.println("写入完毕");
+	
+	//读取
+	for (int i = length / 2; i < length / 2 + 6; i++)
+		System.out.println((char) out.get(i));
+}
+```
+
+
+####（10）文件加锁
+
+* 简介
+	* 有时我们需要对文件加锁，以同步访问某个文件
+	* FileLock是使用了操作系统提供的文件加锁功能，所以可以影响到其他系统进程，其他普通进程，即使不是java写的
+	* FileLock.lock()会阻塞，tryLock不会阻塞
+	* lock系列方法可以带参数：
+		* 加锁文件的某一部分，多个进程可以分别加锁文件的一部分，数据库就是这样
+		* 参数3可以决定是否共享锁，这里又出现个共享锁和独占锁，共享锁需要操作系统支持
+	
+用法：
+```java
+public static void main(String[] args) throws Exception {
+	FileOutputStream fos = new FileOutputStream("file.txt");
+	FileLock fl = fos.getChannel().tryLock();//---------
+	if (fl != null) {
+		System.out.println("Locked File");
+		TimeUnit.MILLISECONDS.sleep(100);
+		fl.release();//---------------------------------
+		System.out.println("Released Lock");
+	}
+	fos.close();
+}
+```
+
+更多例子，参考LockingMappedFiles.java
 
 
 ###2 异步IO

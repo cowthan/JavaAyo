@@ -11,6 +11,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	* [java高级]
 		* [Ayo库]
 	    * [nio==>okio==>netty](./doc/doc-nio.md)
+	    	* nio和netty教程：http://ifeve.com/selectors/
 	    * [并发==>concurrency]
 	    	* [第一部分](./doc/doc-concurrent.md)
 	    	* [第二部分](./doc/doc-concurrent2.md)
