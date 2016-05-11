@@ -2,14 +2,18 @@ java nio
 ===========================
 
 * 主题：
-	* 通道和缓冲器：提高读写速度，Channel，ByteBuffer等
+	* 通道和缓冲器：提高读写速度，Channel，ByteBuffer，速度怎么提高的
+		* ByteBuffer的操作是很底层的，底层就快，底层怎么就快
+		* ByteBuffer倾向于大块的操作字节流，大块就快
 	* 异步IO：提高线程的利用率，增加系统吞吐量，selector，key等，但以牺牲实时性为代价（折衷是永恒不变的主题）
-
+		* 阻塞管理：策略就是不阻塞，阻塞就得一个线程管理一个IO，如Socket，在read上阻塞，旧IO你也只能阻塞，一个操作系统又能开几个线程呢
+		* 怎么就牺牲实时性了，一组IO，轮询看有没有可读信息，所以一个IO来消息了，不会立刻就轮询到它
+		* 所以负责轮询IO的线程，读到消息就得立刻分发出去，尽量不能有耗时操作
 
 ##1 通道和缓冲器
 
 
-###（1） 简介
+####（1） 简介
 
 java.nio.*包的引入是为了提高速度，并且旧的IO包已经用nio重新实现过，所以即使你不用nio，也已经收益了
 
@@ -82,7 +86,7 @@ java.nio.*包的引入是为了提高速度，并且旧的IO包已经用nio重�
 
 
 
-####
+#####
 例子，代码比较短，直接贴过来
 ```java
 package com.cowthan.nio;
@@ -129,7 +133,7 @@ public class GetChannel {
 
 ```
 
-###（2）更多
+####（2）更多：flip, clear操作
 
 * 更多
 	* ByteBuffer.allocate(len)的大小问题，大块的移动数据是快的关键，所以长度很重要，但没啥标准，根据情况定吧，1024（1K）小了
@@ -149,7 +153,7 @@ while(src.read(buff) != -1){
 }
 ```
 
-###（3）连接通道
+####（3）连接通道
 
 上面说过，nio通过大块数据的移动来加快读写速度，前面这个大小都由ByteBuffer来控制，
 其实还有方法可以直接将读写两个Channel相连
@@ -172,7 +176,7 @@ public class TransferTo {
 } // /:~
 ```
 	
-###（4）字符流
+####（4）字符流：CharBuffer和Charset，其实就是byte[]和编码问题
 
 ByteBuffer是最原始的，其实就是字节流，适用于二进制数据的读写，图片文件等
 
@@ -250,7 +254,7 @@ windows-1253: cp1253, cp5349
 ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 
 
-####（6）视图缓冲器
+####（6）视图缓冲器：ShortBuffer，IntBuffer, LongBuffer，FloatBuffer，DoubleBuffer，CharBuffer
 
 * 不多说：
     * ByteBuffer底层是一个byte[]，get()方法返回一个byte，1字节，8bit，10字节可以get几次？10次
@@ -258,6 +262,19 @@ ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 	* 同理，还有ShortBuffer, LongBuffer, FloatBuffer, DoubleBuffer，这些就是ByteBuffer的一个视图，所以叫视图缓冲器
 	* asIntBuffer时，如果ByteBuffer本身有5个byte，则其中前4个会变成IntBuffer的第0个元素，第5个被忽略了，但并未被丢弃
 	* 往新的IntBuffer放数据（put(int)），默认时会从头开始写，写入的数据会反映到原来的ByteBuffer上
+
+
+* 总结：
+    * `具体也说不明白了，其实就是你有什么类型的数据，就用什么类型的Buffer`
+    * 但直接往通道读写的，肯定是ByteBuffer，所以首先得有个ByteBuffer，其他视图Buffer，就得从ByteBuffer来
+    * 怎么从ByteBuffer来呢，ByteBuffer.asIntBuffer()等方法
+
+例子：ViewBuffers.java
+
+![](./img/nio1.png)
+
+
+####（7）
 
 
 
