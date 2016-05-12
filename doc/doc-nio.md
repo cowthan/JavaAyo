@@ -6,9 +6,13 @@ java nio
 		* ByteBuffer的操作是很底层的，底层就快，底层怎么就快
 		* ByteBuffer倾向于大块的操作字节流，大块就快
 	* 异步IO：提高线程的利用率，增加系统吞吐量，selector，key等，但以牺牲实时性为代价（折衷是永恒不变的主题）
-		* 阻塞管理：策略就是不阻塞，阻塞就得一个线程管理一个IO，如Socket，在read上阻塞，旧IO你也只能阻塞，一个操作系统又能开几个线程呢
+		* channel管理：向Selector注册Channel，然后调用它的select()方法。这个方法会一直阻塞到某个注册的通道有事件就绪
+			* Selector允许单线程处理多个 Channel。如果你的应用打开了多个连接（通道），但每个连接的流量都很低，使用Selector就会很方便。例如，在一个聊天服务器中
 		* 怎么就牺牲实时性了，一组IO，轮询看有没有可读信息，所以一个IO来消息了，不会立刻就轮询到它
 		* 所以负责轮询IO的线程，读到消息就得立刻分发出去，尽量不能有耗时操作
+		* 特别注意：
+			* Channel和Selector配合时，必须channel.configureBlocking(false)切换到非阻塞模式
+			* 而FileChannel没有非阻塞模式，只有Socket相关的Channel才有
 
 ##1 通道和缓冲器
 
@@ -84,6 +88,12 @@ java.nio.*包的引入是为了提高速度，并且旧的IO包已经用nio重�
 	* 可以看出，Channel和ByteBuffer提供的接口都比较低级，直接和操作系统契合，说是这就是快的原因
 
 
+* 关于Channel：
+    * FileChannel
+    * DatagramChannel：通过UDP读写网络，无连接的
+    * SocketChannel：通过TCP读写网络
+    * ServerSocketChannel：监听新来的TCP连接，每个新进来的连接都会创建一个SocketChannel
+
 
 
 #####
@@ -133,12 +143,12 @@ public class GetChannel {
 
 ```
 
-####（2）更多：flip, clear和mark，reset操作
+####（2）更多：flip, clear，compact和mark，reset操作
 
-* flip，clear和mark，reset
+* flip，clear，compact和mark，reset
 	* 这里说的读写都是相对于ByteBuffer
 	* 由写转读：flip
-	* 由写转读：clear
+	* 由写转读：clear清空缓冲区，compact清空缓冲区的已读数据（结果就是再装车，就是从未读数据后面开始）
 	* 随机读写：mark和reset，如果要一会写一会读，mark会记录当前position，position就是读写的起点，reset会回滚
 	* ByteBuffer.allocate(len)的大小问题，大块的移动数据是快的关键，所以长度很重要，但没啥标准，根据情况定吧，1024（1K）小了
 	* ByteBuffer.wrap(byte[])，不会再复制数组，而是直接以参数为底层数组，快
@@ -157,7 +167,110 @@ while(src.read(buff) != -1){
 }
 ```
 
+`缓冲器细节：四大索引`
 
+看图：
+![](./img/buffers-modes.png)
+
+
+* 四大索引：
+	* mark：标记，mark方法记录当前位置，reset方法回滚到上次mark的位置
+	* position：位置，当前位置，读和写都是在这个位置操作，并且会影响这个位置，position方法可以seek
+	* limit：界限，
+		* 作为读的界限时：指到buffer当前被填入了多少数据，get方法以此为界限，
+			* flip一下，limit才有值，指向postion，才能有个读的界限
+		* 作为写的界限时：
+			* allocate或者clear时，直接可写，limit指向capacity，表示最多写到这
+			* wrap时，直接可读，所以position是0，limit是指到之后，capacity也是指到最后，直接进入可读状态
+	* capacity：容量，指到buffer的最后，这不是字节数，而是能写入的个数，对于ByteBuffer，就是byte个数，对于IntBuffer，就是int个数
+		* allocate方法的参数就是capacity
+			* 所以，可以推断一下，ByteBuffer.capacity = 5时，如果转成IntBuffer，capacity是1，不会指向最后，而是留出了最后一个字节，被忽略了，没法通过Int读写
+
+#####
+对应的方法：
+![](./img/nio2.png)
+
+#####
+```java
+public final Buffer flip() {
+    limit = position;
+    position = 0;
+    mark = UNSET_MARK;
+    return this;
+}
+
+public final Buffer rewind() {
+    position = 0;
+    mark = UNSET_MARK;
+    return this;
+}
+
+public final boolean hasRemaining() {
+    return position < limit;
+}
+
+public final Buffer clear() {
+    position = 0;
+    mark = UNSET_MARK;
+    limit = capacity;
+    return this;
+}
+
+
+public final Buffer mark() {
+    mark = position;
+    return this;
+}
+
+public final Buffer reset() {
+    if (mark == UNSET_MARK) {
+        throw new InvalidMarkException("Mark not set");
+    }
+    position = mark;
+    return this;
+}
+
+```
+
+例子：交换相邻的两个字符
+```java
+/**
+ * 给一个字符串，交换相邻的两个字符
+ */
+private static void symmetricScramble(CharBuffer buffer) {
+	while (buffer.hasRemaining()) {
+		buffer.mark();
+		char c1 = buffer.get();
+		char c2 = buffer.get();
+		buffer.reset();
+		buffer.put(c2).put(c1);
+	}
+}
+
+/*
+思考：如果没有mark和reset功能，你怎么做？用postion方法记录和恢复刚才位置
+*/
+private static void symmetricScramble2(CharBuffer buffer) {
+	while (buffer.hasRemaining()) {
+		int position = buffer.position();
+		char c1 = buffer.get();
+		char c2 = buffer.get();
+		buffer.position(position);
+		buffer.put(c2).put(c1);
+	}
+}
+```
+
+* 总结：
+	* flip：一般用于由写转读，flip之后可以：
+		* 读：是从头读，能读到刚才写的长度
+		* 写：是从头写，会覆盖刚才写入的内容
+	* clear：一般用于读转写，clear之后可以：
+		* 读：但是读不到什么了
+		* 写：是从头写
+	* mark和reset：一般用于读写交替
+		* mark：相当于int postion = buffer.postion()，记下当前位置
+		* reset：相当于buffer.postion(position)，回到刚才记录的位置 
 
 ####（3）连接通道
 
@@ -255,7 +368,18 @@ windows-1253: cp1253, cp5349
     * asCharBuffer()会把ByteBuffer转为CharBuffer，但用的是系统默认编码
     
 
-####（5）各种Buffer
+
+####（5）视图缓冲器：ShortBuffer，IntBuffer, LongBuffer，FloatBuffer，DoubleBuffer，CharBuffer
+
+* Buffer类型：
+	* ByteBuffer
+	* DoubleBuffer
+	* FloatBuffer
+	* IntBuffer
+	* LongBuffer
+	* ShortBuffer
+	* CharBuffer   字符串的缓冲区
+	* MappedByteBuffer  大文件的缓冲区
 
 ByteBuffer系列的类继承关系挺有意思，可以研究研究
 
@@ -263,8 +387,6 @@ ByteArrayBuffer是其最通用子类，一般操作的都是ByteArrayBuffer
 
 ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 
-
-####（6）视图缓冲器：ShortBuffer，IntBuffer, LongBuffer，FloatBuffer，DoubleBuffer，CharBuffer
 
 * 不多说：
     * ByteBuffer底层是一个byte[]，get()方法返回一个byte，1字节，8bit，10字节可以get几次？10次
@@ -284,7 +406,7 @@ ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 ![](./img/nio1.png)
 
 
-####（7）字节序
+####（6）字节序
 
 * 简介：
 	* 高位优先，Big Endian，最重要的字节放地址最低的存储单元，ByteBuffer默认以高位优先，网络传输大部分也以高位优先
@@ -295,106 +417,31 @@ ByteBuffer.asLongBuffer(), asIntBuffer(), asDoubleBuffer()等一系列
 	* 对于00000000 01100001，按short来读，如果是big endian，就是97， 以little endian，就是24832
 
 
-#### （8）缓冲器细节：四大索引
+####（7） Scatter/Gather
 
-* 四大索引：
-	* mark：标记，mark方法记录当前位置，reset方法回滚到上次mark的位置
-	* position：位置，当前位置，读和写都是在这个位置操作，并且会影响这个位置，position方法可以seek
-	* limit：界限，
-		* 作为读的界限时：指到buffer当前被填入了多少数据，get方法以此为界限，
-			* flip一下，limit才有值，指向postion，才能有个读的界限
-		* 作为写的界限时：
-			* allocate或者clear时，直接可写，limit指向capacity，表示最多写到这
-			* wrap时，直接可读，所以position是0，limit是指到之后，capacity也是指到最后，直接进入可读状态
-	* capacity：容量，指到buffer的最后
+一个Channel，多个Buffer，相当于多个运煤车在一个通道工作
 
-#####
-对应的方法：
-![](./img/nio2.png)
 
-#####
+读到多个Buffer里：
 ```java
-public final Buffer flip() {
-    limit = position;
-    position = 0;
-    mark = UNSET_MARK;
-    return this;
-}
-
-public final Buffer rewind() {
-    position = 0;
-    mark = UNSET_MARK;
-    return this;
-}
-
-public final boolean hasRemaining() {
-    return position < limit;
-}
-
-public final Buffer clear() {
-    position = 0;
-    mark = UNSET_MARK;
-    limit = capacity;
-    return this;
-}
-
-
-public final Buffer mark() {
-    mark = position;
-    return this;
-}
-
-public final Buffer reset() {
-    if (mark == UNSET_MARK) {
-        throw new InvalidMarkException("Mark not set");
-    }
-    position = mark;
-    return this;
-}
-
+ByteBuffer header = ByteBuffer.allocate(128);
+ByteBuffer body   = ByteBuffer.allocate(1024);
+ByteBuffer[] bufferArray = { header, body };
+channel.read(bufferArray);
 ```
 
-例子：交换相邻的两个字符
+多个Buffer往channel写：
 ```java
-/**
- * 给一个字符串，交换相邻的两个字符
- */
-private static void symmetricScramble(CharBuffer buffer) {
-	while (buffer.hasRemaining()) {
-		buffer.mark();
-		char c1 = buffer.get();
-		char c2 = buffer.get();
-		buffer.reset();
-		buffer.put(c2).put(c1);
-	}
-}
-
-/*
-思考：如果没有mark和reset功能，你怎么做？用postion方法记录和恢复刚才位置
-*/
-private static void symmetricScramble2(CharBuffer buffer) {
-	while (buffer.hasRemaining()) {
-		int position = buffer.position();
-		char c1 = buffer.get();
-		char c2 = buffer.get();
-		buffer.position(position);
-		buffer.put(c2).put(c1);
-	}
-}
+//注意，Buffer的长度是100，但只有50个数据，就只会写入50，换句话说，只有position和limit之间的内容会被写入（put完先flip一下，才能往channel写？？？）
+ByteBuffer header = ByteBuffer.allocate(128);
+ByteBuffer body   = ByteBuffer.allocate(1024);
+ByteBuffer[] bufferArray = { header, body };
+channel.write(bufferArray);
 ```
 
-* 总结：
-	* flip：一般用于由写转读，flip之后可以：
-		* 读：是从头读，能读到刚才写的长度
-		* 写：是从头写，会覆盖刚才写入的内容
-	* clear：一般用于读转写，clear之后可以：
-		* 读：但是读不到什么了
-		* 写：是从头写
-	* mark和reset：一般用于读写交替
-		* mark：相当于int postion = buffer.postion()，记下当前位置
-		* reset：相当于buffer.postion(position)，回到刚才记录的位置 
 
-####（9）内存映射文件：大文件的读写
+
+####（8）内存映射文件：大文件的读写
 
 大文件，如2G的文件，没法一下加载到内存中读写
 
@@ -425,7 +472,7 @@ public static void main(String[] args) throws Exception {
 ```
 
 
-####（10）文件加锁
+####（9）文件加锁
 
 * 简介
 	* 有时我们需要对文件加锁，以同步访问某个文件
@@ -454,3 +501,235 @@ public static void main(String[] args) throws Exception {
 
 
 ###2 异步IO
+
+
+本节的例子在com.cowthan.socket.nio包里
+
+* 关于Channel：
+    * FileChannel：永远都是阻塞模式，当然读本地文件也不会阻塞多久，没法和Selector配合
+    * DatagramChannel：通过UDP读写网络，无连接的
+    * SocketChannel：通过TCP读写网络
+    * ServerSocketChannel：监听新来的TCP连接，每个新进来的连接都会创建一个SocketChannel
+
+* 简介：
+	* Selector提供了一个线程管理多个Channel的功能，与之相比，旧的Socket处理方式是每个Socket连接都在一个线程上阻塞
+	* Channel和Selector配合时，必须channel.configureBlocking(false)切换到非阻塞模式
+	* 而FileChannel没有非阻塞模式，只有Socket相关的Channel才有
+
+
+* 概括：
+	* SocketServerChannel和SocketChannel的基本用法，参考socket.nio.NioXXServer和Client
+	* 可能会阻塞，可以通过channel.configureBlocking(false)设置非阻塞的地方：
+		* SocketChannel.connect(new InetSocketAddress(hostname, port))， 配合sc.finishConnect()判断是否连接成功
+		* SocketChannel sc = ssc.accept()，在非阻塞模式下，无新连接进来时返回值会是null
+
+
+####（1）旧IO处理Socket的方式
+
+要读取Socket上的Stream，就得在read时阻塞，所以每一个Socket都得一个线程管理，对于服务器来说，能开的线程数是有限的
+
+有数据支持吗？？
+
+
+####（2）不使用Selector，自己想法管理SocketChannel
+
+```java
+@Override
+public void run() {
+	while(!isClosed && !Thread.interrupted()){
+		for(String key: map.keySet()){
+			SocketChannel sc = map.get(key);
+			
+			ByteBuffer buf = ByteBuffer.allocate(1024);
+			try {
+				int bytesRead = sc.read(buf);
+				buf.flip();
+				if(bytesRead <= 0){
+
+				}else{
+					System.out.println("收到消息（来自" + key + "）：" + Charset.forName("utf-8").decode(buf));
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+* 弊端分析：
+	* 不断循环读取所有Channel，有数据则读出来
+	* 问题1：在while里，你sleep还是不sleep，sleep就损失太多实时性，不sleep就导致CPU大量空转
+	* 问题2：对于ServerSocketChannel，如果accept非阻塞，则需要while(true)不断判断是否有新连接，也浪费CPU
+	* 问题3：对于ServerSocket.connect()，如果非阻塞，则需要while(true)不断判断是否连接服务器成功，也浪费CPU
+
+* 所以现在我们知道需要什么了
+	* 需要SocketChannel的read方法不阻塞
+	* 或者需要一个东西，可以在所有SocketChannel上等待，任何一个有了消息，就可以唤醒，这里面就有个监听的概念
+	* 并且可读，可写，accept(), connect()都应该对应不同的事件
+	* 这就引出了Selector，Selector就是java从语言层面和系统层面对这个问题的解决方案
+	
+####（3）Selector
+
+
+使用Selector的完整示例：
+```java
+Selector selector = Selector.open();
+channel.configureBlocking(false);
+SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+while(true) {
+  int readyChannels = selector.select();   //就在这阻塞，但已经实现了一个线程管理多个Channel（SocketChannel-读写，connect事件，DatagramChannel-读写事件，SocketServerChannel-accept事件）
+  if(readyChannels == 0) continue;
+  Set selectedKeys = selector.selectedKeys();
+  Iterator keyIterator = selectedKeys.iterator();
+  while(keyIterator.hasNext()) {
+    SelectionKey key = keyIterator.next();
+    if(key.isAcceptable()) {
+        // a connection was accepted by a ServerSocketChannel.
+    } else if (key.isConnectable()) {
+        // a connection was established with a remote server.
+    } else if (key.isReadable()) {
+        // a channel is ready for reading
+    } else if (key.isWritable()) {
+        // a channel is ready for writing
+    }
+    keyIterator.remove();
+  }
+}
+```
+
+
+```java
+Selector selector = Selector.open();
+SelectionKey selectionKey = sc.register(selector, SelectionKey.OP_READ);
+
+//看Selector对哪些事件感兴趣
+int interestSet = selectionKey.interestOps();
+boolean isInterestedInAccept  = (interestSet & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT;
+boolean isInterestedInConnect = interestSet & SelectionKey.OP_CONNECT) == SelectionKey.OP_CONNECT;
+boolean isInterestedInRead    = interestSet & SelectionKey.OP_READ) == SelectionKey.OP_READ;
+boolean isInterestedInWrite   = interestSet & SelectionKey.OP_WRITE) == SelectionKey.OP_WRITE;
+
+//通道中已经就绪的集合，每一次selection都得先访问这个，知道是因为哪些事件被唤醒的
+int readySet = selectionKey.readyOps();
+//或者：
+selectionKey.isAcceptable();
+selectionKey.isConnectable();
+selectionKey.isReadable();
+selectionKey.isWritable();
+
+//拿到Channel和Selector
+Channel  channel  = selectionKey.channel();
+Selector selector = selectionKey.selector();
+
+//对应关系是：1个Selector，多个Channel，多个SelectionKey，一个Channel对应一个SelectionKey，而且一个SelectionKey可以添加一个extra数据，以满足特定需求
+
+//select方法：这才是会阻塞的地方，注意，在这里阻塞，是性能最佳的表现
+int readyCount = selector.select()  //select()阻塞到至少有一个通道在你注册的事件上就绪了
+int readyCount = selector.select(long timeout) //最长会阻塞timeout毫秒(参数)
+int readyCount = selector.selectNow() //不会阻塞，无则0
+//返回值：有几个通道就绪
+/*
+select()方法返回的int值表示有多少通道已经就绪。亦即，自上次调用select()方法后有多少通
+道变成就绪状态。如果调用select()方法，因为有一个通道变成就绪状态，返回了1，若再次调用select()方法，
+如果另一个通道就绪了，它会再次返回1。如果对第一个就绪的channel没有做任何操作，现在就有两个就绪的通
+道，但在每次select()方法调用之间，只有一个通道就绪了
+*/
+
+//有通道就绪了，就得得到这个Channel，通道存在SelectionKey里，而selector可以获得一个SelectionKey集合
+Set selectedKeys = selector.selectedKeys();
+Iterator keyIterator = selectedKeys.iterator();
+while(keyIterator.hasNext()) {
+    SelectionKey key = keyIterator.next();
+    if(key.isAcceptable()) {
+        // a connection was accepted by a ServerSocketChannel.
+    } else if (key.isConnectable()) {
+        // a connection was established with a remote server.
+    } else if (key.isReadable()) {
+        // a channel is ready for reading
+        Channel channel = key.channel();
+    } else if (key.isWritable()) {
+        // a channel is ready for writing
+    }
+    keyIterator.remove();
+}
+
+```
+
+* register方法参数：Channel事件
+	* 参数表示Selector对Channel的什么事件感兴趣
+	* Connect：SelectionKey.OP_CONNECT
+	* Accept：SelectionKey.OP_ACCEPT
+	* Read：SelectionKey.OP_READ
+	* Write：SelectionKey.OP_WRITE
+	* 可以组合：int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;
+
+* SelectionKey都有啥信息：
+	* interest集合：对哪些事件感兴趣
+	* ready集合：感兴趣的事件集中，哪些事件准备就绪了
+	* Channel：监听的哪个Channel
+	* Selector：谁在监听
+	* 可选的extra
+
+
+
+* 唤醒阻塞的Selector：在select方法的阻塞
+	* 情况1：有感兴趣的事件来了
+	* 情况2：手动调用Selector.wakeup()，只要让其它线程在第一个线程调用select()方法的那个对象上调用Selector.wakeup()方法即可
+		* 如果有其它线程调用了wakeup()方法，但当前没有线程阻塞在select()方法上，下个调用select()方法的线程会立即“醒来（wake up）”。
+
+
+* 关闭Selector
+	* close()方法，关闭该Selector，且使注册到该Selector上的所有SelectionKey实例无效
+	* 通道本身并不会关闭
+
+
+###3 DatagramChannel：UDP通信
+
+
+
+
+
+###4 Pipe
+
+http://ifeve.com/pipe/
+
+* 简介：
+	* Pipe用于线程通信，两个Thread由一个Pipe连接
+	* pipe的两端，一端是SinkChannel，负责写入，一端是SourceChannel，负责读取
+	* 所以pipe是单向通信
+	* 两个Pipe就可以实现双向通信
+
+
+看图：
+![](./img/pipe.bmp)
+
+####
+
+```java
+Pipe pipe = Pipe.open();
+
+//写入
+Pipe.SinkChannel sinkChannel = pipe.sink();
+String newData = "New String to write to file..." + System.currentTimeMillis();
+ByteBuffer buf = ByteBuffer.allocate(48);
+buf.clear();
+buf.put(newData.getBytes());
+
+buf.flip();
+
+while(buf.hasRemaining()) {
+    sinkChannel.write(buf);
+}
+
+//读取
+Pipe.SourceChannel sourceChannel = pipe.source();
+ByteBuffer buf = ByteBuffer.allocate(48);
+int bytesRead = sourceChannel.read(buf);
+```
+
+
+
+
+
+
