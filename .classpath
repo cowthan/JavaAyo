@@ -12,6 +12,7 @@
 	<classpathentry kind="src" path="src-okhttp3"/>
 	<classpathentry kind="src" path="src-okhttp3-ws"/>
 	<classpathentry kind="src" path="src-retrofit"/>
+	<classpathentry kind="src" path="src-netty"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="libs-common/fastjson-1.2.6.jar"/>
 	<classpathentry kind="lib" path="libs-common/gson-2.6.2.jar"/>
@@ -36,8 +37,8 @@
 	<classpathentry kind="lib" path="libs-tools/jimi.jar"/>
 	<classpathentry kind="lib" path="libs-tools/jpush-client-3.2.3.jar"/>
 	<classpathentry kind="lib" path="libs-tools/metadata-extractor-2.7.0.jar"/>
-	<classpathentry kind="lib" path="libs-tools/netty-all-4.0.26.Final.jar"/>
 	<classpathentry kind="lib" path="libs-tools/org.apache.commons.lang.jar"/>
 	<classpathentry kind="lib" path="libs-tools/sun.misc.BASE64Decoder.jar"/>
+	<classpathentry kind="lib" path="libs-tools/netty-all-4.1.0.CR7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
