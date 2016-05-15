@@ -1,6 +1,25 @@
 java nio
 ===========================
 
+* Java的IO体系：
+	* 旧IO
+	* 新IO：nio，用ByteBuffer和FileChannel读写
+	* nio通道管理：Selector
+	* Okio：io的封装，好像不关nio的事
+	* Netty：目的是快速的实现任何协议的server和client端
+		* 所以说你可以用netty通过channel等实现一个httpclient，和URLConnection平级
+		* 这个课题太大了，应该分层次学：
+			* 第一层是官方的文档，写几个helloworld
+			* 第二层就是官方的example，研究server和client
+			* 第三层是权威指南，研究TCP，UDP等的常见问题，谷歌的protobuf，自己实现http服务器等
+		* github：https://github.com/netty/netty
+	* 其他：
+		* Gzip
+		* 大文件读写，如2G
+		* 文件锁
+	
+	
+
 * 主题：
 	* 通道和缓冲器：提高读写速度，Channel，ByteBuffer，速度怎么提高的
 		* ByteBuffer的操作是很底层的，底层就快，底层怎么就快
