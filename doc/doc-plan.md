@@ -21,5 +21,26 @@
 ![](./img/11111.png)
 
 
+5 Classloader
+
+OSGi
+
+6 字节码生成
+
+动态代理
+
+javac命令就是字节码生成技术的老祖宗
+
+CGLib，Javassist，ASM
 
 
+
+
+空过：
+JVM第4章：java调优工具，tools.jar包
+JVM第5章：几个案例
+JVM第10章：编译期优化，早期优化
+JVM第11章：运行期优化，晚期优化
+
+JVM 12章：内存模型和线程
+JVM 13章：线程安全和锁优化

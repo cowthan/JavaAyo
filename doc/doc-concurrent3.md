@@ -13,3 +13,17 @@ java.util.concurrent.ForkJoinPool
 
 
 还有Scala，Closure，Erlang等天生支持并行的语言
+
+![](./img/forkjoin-1.png)
+
+
+
+
+
+JVM级别
+========================================
+
+JVM 12章：内存模型和线程
+JVM 13章：线程安全和锁优化
+
+
