@@ -15,14 +15,6 @@
 		* 2.1 简单模式
 		* 2.2 Builder接口
 	* 3 单例模式
-		* 饿汉
-		* 懒汉：双保险模式
-		* 懒汉：内部类模式
-		* 枚举
-		* 怎么能破坏单例的限制
-			* 反射
-			* 序列化
-			* 安卓里的多进程，会产生多个Application
 	* 4 工厂模式：对象成体系，横向分为产品族，纵向分为产品等级
 		* 简单工厂模式
 		* 抽象工厂：单工厂
@@ -323,8 +315,73 @@ public class NutritionFacts2 {
 ```
 
 
+###3 单例模式
+
+* 怎么能破坏单例的限制
+	* 反射：反射出私有构造方法，Enum可自然解决，其他方式得强写检查代码
+	* 序列化：将单例序列化，再反序列化，出来就是一个新对象，Enum可自然解决，其他方式使用readResolve方法
+	* 安卓里的多进程，会产生多个Application
 
 
+
+####3.1 饿汉：共有域，或静态工厂
+
+```java
+public class Singleton {
+	
+	public static final Singleton INSTANCE = new Singleton();
+	private Singleton(){}
+	private Object readResolve(){ return INSTANCE; }
+	
+	public void provideService(){
+		
+	}
+
+}
+```
+
+```java
+public class Singleton {
+	
+	private static final Singleton INSTANCE = new Singleton();
+	private Singleton(){}
+	public static Singleton getInstance(){ return INSTANCE; }
+	private Object readResolve(){ return INSTANCE; }
+	
+	public void provideService(){
+		
+	}
+
+}
+```
+
+
+
+####3.2 懒汉：双保险模式
+
+
+
+####3.3 懒汉：内部类模式
+
+
+
+####3.4 枚举
+
+按照effective java书里说法，这个方法虽然没流行起来，但这个是最佳方式，第2版15页
+
+```java
+//直接就能防止反射，防止序列化时生成新类
+//是否延迟加载不知道
+public enum Singleton {
+	
+	INSTANCE;
+	
+	public void provideService(){
+		
+	}
+
+}
+```
 
 
 

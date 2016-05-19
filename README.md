@@ -10,21 +10,38 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 * 目录
 	* [java高级]
 		* [Ayo库]
+		* http://blog.smoker.cc/translation/20160511.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	    * [nio==>okio==>netty](./doc/doc-nio.md)
 	    	* nio和netty教程：http://ifeve.com/selectors/
 	    * [并发==>concurrency]
 	    	* [第一部分](./doc/doc-concurrent.md)
 	    	* [第二部分](./doc/doc-concurrent2.md)
+	    	* 深入理解ThreadLocal：https://github.com/edagarli/java-route/blob/master/shen_ru_li_jie_threadlocal.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://www.cnblogs.com/MOBIN/p/5436482.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://toutiao.io/posts/srrm8v
+	    	* http://www.importnew.com/19666.html
 	    * [集合==>guava](./doc/doc-collections.md)
+	    	* ConcurrentMap原理：https://github.com/edagarli/java-route/blob/master/concurrenthashmap_de_shi_xian_yuan_li.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	    * [注解==>依赖注入dagger]
+	    	* dagger2：http://toutiao.io/posts/vahxj5
 	    * [反射==>有啥反射的增强库吗]
 	    * [ClassLoader==>字节码，apk]
 	    * [Socket==>openfire==>netty]
 	    * [Json]
+	    	* Gson：http://www.jianshu.com/p/e740196225a4#?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	    * [xml==>webservice]
 	    * [Rxjava]
+	    	* http://www.wangchenlong.org/2016/03/20/1603/207-rxjava-first/?f=tt&hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://www.easydone.cn/2016/03/29/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://toutiao.io/posts/guri0a
 	    * [Okhttp]
+	    	* https://segmentfault.com/a/1190000004148636?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://www.jianshu.com/p/3141d4e46240?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://toutiao.io/posts/cmbhv8
 	    * [Retrofit]
+	    	* http://www.jianshu.com/p/45cb536be2f4?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* http://toutiao.io/posts/jf391t
+	    	* http://gank.io/post/56e80c2c677659311bed9841?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	    * [Guava]
 	    * [数据库访问：原生==>nutz==>其他]
 	    	* [数据库优化]
@@ -36,8 +53,20 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	    	* cdk：(http://www.tuicool.com/articles/NNJbyu)
 	    	* cdk2：(https://github.com/makeapp/cocoseditor-java-samples)
 	    	* gdx版
+	    * [redis]
+	    	* http://www.importnew.com/19321.html
+	    * [推送]
+	    	* Android推送平台调研报告： http://www.jianshu.com/p/d650d02a1c7a?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    * jsoup
+	    	* https://jsoup.org/apidocs/org/jsoup/select/Selector.html
+	    * 异常：
+	    	* http://lrwinx.github.io/2016/04/28/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1java%E5%BC%82%E5%B8%B8/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	    	* 11
 	* [套路：Effective Java笔记]
-		* [对象创建和销毁：静态工厂](./doc/doc-effective-static-factory)
+		* [对象管理：创建和销毁](./doc/doc-effective-object-management.md)
+		* 垃圾收集：http://www.wxtlife.com/2016/04/25/java-jvm-gc/
+		* 安卓跨进程单例：https://mp.weixin.qq.com/s?__biz=MzI1NjEwMTM4OA==&mid=2651231757&idx=1&sn=2b881142e851264d7c44ce6dbca51f59&scene=1&srcid=0427RCeIg99OyeMLCF5646KZ&key=b28b03434249256bf33cda558e6748eb9b28ad7caaea7573280436b84839e1f7a3cc9218de4130d7ed69d9ea975e3238&ascene=0&uin=NTkyMjI3NQ%3D%3D&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=xoE7jU883QbJlGggF7yDrkyVciTuIdC6cWJXbH4ZzV8%3D
+		* 安卓的enum到底占多少内存：http://toutiao.io/posts/se32l4
 	* [工具]
 		* [命令行]
 		* [csv读写]
@@ -49,6 +78,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	* [算法学习]
 		* [排序]
 		* [先选本教材]
+		* 自己实现超小编译器：https://github.com/1c7/the-super-tiny-compiler?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	* [设计模式]
 		* [pattern1包里]
 	* [第三方]
@@ -64,9 +94,55 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 			* [仿Looper，Handler](./doc/looper.md)
 			* [仿AsyncTask]
 		* [安卓代码生成器]
+		* 性能调优：
+			* http://mp.weixin.qq.com/s?__biz=MzA4NTQwNDcyMA==&mid=2650661382&idx=1&sn=8cd37062b5a67bb60db48aa1fe72b5a9&scene=0#wechat_redirect
+			* 微信为什么这么省流量：http://www.habadog.com/2015/10/23/wechat-use-less-data/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* 后台保活
+			* http://mp.weixin.qq.com/s?__biz=MzA3ODg4MDk0Ng==&mid=403254393&idx=1&sn=8dc0e3a03031177777b5a5876cb210cc&scene=0#wechat_redirect
+			* http://toutiao.com/a6268596289538998529/?tt_from=mobile_qq&utm_campaign=client_share&app=news_article&utm_source=mobile_qq&iid=3823768336&utm_medium=toutiao_ios
+			* http://www.jianshu.com/p/63aafe3c12af
+		* 适配
+			* http://mp.weixin.qq.com/s?__biz=MzA4MjU5NTY0NA==&mid=404220168&idx=1&sn=8a05266b5b7a5a886db3cf881d9f2edb&scene=0#wechat_redirect
+		* apk优化：
+			* http://jayfeng.com/2016/03/01/Android-APP%E7%BB%88%E6%9E%81%E7%98%A6%E8%BA%AB%E6%8C%87%E5%8D%97/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* 分析apk：http://toutiao.com/i6256184508563849730/?tt_from=mobile_qq&utm_campaign=client_share&ADSESSION=1463657200&app=news_article&utm_source=mobile_qq&ADUIN=279800561&iid=3521906016&utm_medium=toutiao_ios&ADPUBNO=26510&ADTAG=CLIENT.QQ.5431_.0
+			* studio 2.2页支持apk解析，估计就是classyshark
+		* 其他：不应该在这
+			* webview：http://www.jianshu.com/p/3fcf8ba18d7f?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* 一个底部导航栏：http://www.jianshu.com/p/8e6b75e11a3d?utm_campaign=maleskine&utm_content=note&utm_medium=mobile_a
+			* 从LinearLayout源码讲起：http://www.jianshu.com/p/f9b9f05222a8?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* 换肤：http://www.jianshu.com/p/af7c0585dd5b?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* Scroll解析：https://segmentfault.com/a/1190000004982933?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* MotionEvent：http://ztelur.github.io/2016/03/16/Android-MotionEvent%E8%AF%A6%E8%A7%A3/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* ViewDraggerHelper：http://www.jianshu.com/p/0372488cebcf?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* 动画1：http://p.codekk.com/blogs/detail/559623d8d6459ae793499787
+			* Fragment：http://m.blog.csdn.net/article/details?id=51435236
+			* 混淆：http://www.jianshu.com/p/f3455ecaa56e?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* 仿微博弹出：http://m.myexception.cn/android/1880112.html
 	* [其他]
 		* [markdown语法](./README)
-
+		* github静态网站：https://segmentfault.com/a/1190000002765287
+		* pandoc：markdown转换--https://github.com/phodal/fullstack-toolbox/blob/master/documents.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* Graphviz：流程图--https://github.com/phodal/fullstack-toolbox/blob/master/documents.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* 图片转换：ImageMagick--https://github.com/phodal/fullstack-toolbox/blob/master/documents.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* Gitbook：markdown文档们转成静态网站
+		* java开发小工具集合：http://www.hollischuang.com/archives/1459?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	* 架构师
+		* http://mp.weixin.qq.com/s?__biz=MzA4NTU2MTg3MQ==&mid=407250191&idx=1&sn=abbda20219694844554d8318fba23693&scene=0#wechat_redirect
+		* http://blog.zhaiyifan.cn/2016/01/29/android-app-architecture-2015/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* 安卓项目基本规则：http://www.jianshu.com/p/d9e4ddd1c530
+	* web的高并发，数据库优化，中间件，规范等等等等
+		* http://mp.weixin.qq.com/s?__biz=MzA5Nzc4OTA1Mw==&mid=410775314&idx=1&sn=7c7cc94f8f42c6df81b721919593f1c2&scene=0#wechat_redirect
+		* http://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&mid=404669856&idx=1&sn=fd2856ac13112416833e41093f66735c&scene=1&srcid=0318Nke8n2DezrrSWlg7Mqct&from=groupmessage&isappinstalled=0#wechat_redirect
+		* https://zhuanlan.zhihu.com/p/20034107?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* 读写分离：http://blog.jobbole.com/100081/
+		* http://toutiao.io/posts/95qo0b
+		* http://www.importnew.com/19413.html
+		* 陌陌feed流，流量过亿：http://mp.weixin.qq.com/s?__biz=MzA5Nzc4OTA1Mw==&mid=2659597071&idx=1&sn=cd8df9f8c52dfbfb54e65adbe19fae27&scene=0#wechat_redirect
+		* 所有可插入head标签的东西：https://github.com/joshbuchea/HEAD?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+	* git：
+		* http://leoray.leanote.com/post/git?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* https://ourai.ws/posts/working-with-git-in-team/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 ================================
 
 

@@ -30,13 +30,18 @@ public class TestQiniu {
 	
 	public static void main(String[] args) {
 		
-		
+		///乔良：cowthan---cowthan1103---给伪路书用的
+		String ak = "uNaQ_NGIZurU3OMxikyGpk-t4v8tIbP8ct5VQs_f";//Config.qiniu.ak_image;
+		String sk = "FbtNKEzCGbIFccnX14M9iKwQsGcX9YZUyiJylh-9";//Config.qiniu.sk_image;
+		String bucket = "cowthan1103";//Config.qiniu.bucket_image;
+		String domain = "http://7xo0ny.com1.z0.glb.clouddn.com/";
+		String token = "uNaQ_NGIZurU3OMxikyGpk-t4v8tIbP8ct5VQs_f:AM6XGfArmAlRekKqbPk-teMuBoU=:eyJzY29wZSI6ImNvd3RoYW4xMTAzIiwiZGVhZGxpbmUiOjE3NjIwMjA4NDB9";
 		///乔良：dddood3058@126.com（fedcba4321）---ccc1024---里面放的全是露点美女和gif
-		String ak = "przk-OcKylSzIbRFUeTAoSoiYKkKg4NNRQbSLFM0";//Config.qiniu.ak_image;
-		String sk = "JoHeFWYKrEfCR9JgLvr6TLr8WLjX6-6Y7qQVVrLJ";//Config.qiniu.sk_image;
-		String bucket = "ccc1024";//Config.qiniu.bucket_image;
-		String domain = "http://7xnroh.com1.z0.glb.clouddn.com/";
-		String token = "przk-OcKylSzIbRFUeTAoSoiYKkKg4NNRQbSLFM0:DKdXIuGaFLTtOHoSk0DJzTfhdaI=:eyJzY29wZSI6ImNjYzEwMjQiLCJkZWFkbGluZSI6MTc2MjAyMTI4NX0=";
+//		String ak = "przk-OcKylSzIbRFUeTAoSoiYKkKg4NNRQbSLFM0";//Config.qiniu.ak_image;
+//		String sk = "JoHeFWYKrEfCR9JgLvr6TLr8WLjX6-6Y7qQVVrLJ";//Config.qiniu.sk_image;
+//		String bucket = "ccc1024";//Config.qiniu.bucket_image;
+//		String domain = "http://7xnroh.com1.z0.glb.clouddn.com/";
+//		String token = "przk-OcKylSzIbRFUeTAoSoiYKkKg4NNRQbSLFM0:DKdXIuGaFLTtOHoSk0DJzTfhdaI=:eyJzY29wZSI6ImNjYzEwMjQiLCJkZWFkbGluZSI6MTc2MjAyMTI4NX0=";
 		
 		QiniuSpace space = QiniuSpace.space(ak, sk);
 		
@@ -62,8 +67,8 @@ public class TestQiniu {
 		JLog.info(url);
 		
 		//获取token，上传文件要用
-		String newToken = bucket1.refreshToken();
-		JLog.info("token刷新了", newToken);
+		//String newToken = bucket1.refreshToken();
+		//JLog.info("token刷新了", newToken);
 		
 		//上传文件
 		try {
