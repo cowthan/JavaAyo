@@ -36,6 +36,8 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	    	* cdk：(http://www.tuicool.com/articles/NNJbyu)
 	    	* cdk2：(https://github.com/makeapp/cocoseditor-java-samples)
 	    	* gdx版
+	* [套路：Effective Java笔记]
+		* [对象创建和销毁：静态工厂](./doc/doc-effective-static-factory)
 	* [工具]
 		* [命令行]
 		* [csv读写]

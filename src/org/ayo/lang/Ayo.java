@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -284,8 +286,15 @@ public class Ayo {
      * </pre>
      * 
      */
-    public static <T> ArrayList<T> list(T... eles) {
+    public static <T> ArrayList<T> arraylist(T... eles) {
         ArrayList<T> list = new ArrayList<T>(eles.length);
+        for (T ele : eles)
+            list.add(ele);
+        return list;
+    }
+    
+    public static <T> LinkedList<T> linkedlist(T... eles) {
+    	LinkedList<T> list = new LinkedList<T>();
         for (T ele : eles)
             list.add(ele);
         return list;
@@ -298,6 +307,10 @@ public class Ayo {
         for (T ele : eles)
             set.add(ele);
         return set;
+    }
+    
+    public static <K,V> Map<K, V> hashmap(){
+    	return new HashMap<K, V>();
     }
     
     //-------
