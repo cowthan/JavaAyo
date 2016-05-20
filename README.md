@@ -119,6 +119,8 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 			* Fragment：http://m.blog.csdn.net/article/details?id=51435236
 			* 混淆：http://www.jianshu.com/p/f3455ecaa56e?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 			* 仿微博弹出：http://m.myexception.cn/android/1880112.html
+			* RecyclerView：添加header和footer，https://github.com/blipinsk/RecyclerViewHeader
+			* 滑动显示和隐藏顶部底部栏：https://github.com/NashLegend/Auto-Hide-ListView
 	* [其他]
 		* [markdown语法](./README)
 		* github静态网站：https://segmentfault.com/a/1190000002765287
@@ -140,6 +142,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 		* http://www.importnew.com/19413.html
 		* 陌陌feed流，流量过亿：http://mp.weixin.qq.com/s?__biz=MzA5Nzc4OTA1Mw==&mid=2659597071&idx=1&sn=cd8df9f8c52dfbfb54e65adbe19fae27&scene=0#wechat_redirect
 		* 所有可插入head标签的东西：https://github.com/joshbuchea/HEAD?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* http://wetest.qq.com/lab/view/?id=80?from=ads_test2_qqtips&sessionUserType=BFT.PARAMS.190890.TASKID&ADUIN=345766454&ADSESSION=1463734346&ADTAG=CLIENT.QQ.5473_.0&ADPUBNO=26569
 	* git：
 		* http://leoray.leanote.com/post/git?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 		* https://ourai.ws/posts/working-with-git-in-team/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
