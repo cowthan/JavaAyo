@@ -121,6 +121,32 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 			* 仿微博弹出：http://m.myexception.cn/android/1880112.html
 			* RecyclerView：添加header和footer，https://github.com/blipinsk/RecyclerViewHeader
 			* 滑动显示和隐藏顶部底部栏：https://github.com/NashLegend/Auto-Hide-ListView
+			* recyclerview
+				* header和footer：参考XRecycleView的实现，LinearLayoutManager不影响，GridLayout控制span，其他不支持，Adapter被wrap一下以返回header和footer，position和下标不对应了
+				* 下拉：参考ultra，下拉的效果整理
+				* 上拉：自己实现
+				* type分组：Grid的type怎么支持呢
+				* sticky + section index：怎么搞呢
+				* swipe：在Item上就行，在Item上操作的都不是问题
+				* drag：不会
+				* 这些功能怎么组织
+					* 标准模板：header，footer，上拉，下拉，type，
+					* sticky模板
+				* 类组织：
+					* 基类：StatusUI,配合StatusUIManager，控制status，提供onloadok，fail，refresh接口，缓存，状态切换--控制刷新，停止刷新等
+						* 甚至还需要考虑加载过程是否可提示进度，横条还是圈
+						* 状态提供回调，可以同时控制外部
+					* 一级功能类
+						* 考虑界面如何填充，如列表，详情等，这里可以决定放什么content view
+						* 也就列表可以提前清楚数据怎么填充，其他都是具体业务类了啊
+						* 注意，到这一层，都还可以算是MVP的V层
+					* 实现类：
+						* 主要是P层的功能了
+						* 考虑数据怎么获取
+						* 可以添加上拉，下拉，自动刷新等操作了
+						* Recycler列表，带上拉，下拉，header，footer等
+						* sticky recycler列表
+						* 
 	* [其他]
 		* [markdown语法](./README)
 		* github静态网站：https://segmentfault.com/a/1190000002765287
