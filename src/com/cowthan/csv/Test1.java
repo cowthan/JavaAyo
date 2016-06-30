@@ -2,6 +2,7 @@ package com.cowthan.csv;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ import org.ayo.lang.JsonUtilsUseFast;
  * @author Administrator
  *
  */
-public class Test1 {
+public class Test1 implements Serializable{
+
 	
 	public static class Contact{
 		public String familyName;
@@ -85,3 +87,5 @@ public class Test1 {
 	}
 
 }
+
+

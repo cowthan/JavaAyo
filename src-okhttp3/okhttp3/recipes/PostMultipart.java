@@ -17,6 +17,7 @@ package okhttp3.recipes;
 
 import java.io.File;
 import java.io.IOException;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -31,28 +32,44 @@ public final class PostMultipart {
    */
   private static final String IMGUR_CLIENT_ID = "9199fdef135c122";
   private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+  private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
 
   private final OkHttpClient client = new OkHttpClient();
 
   public void run() throws Exception {
     // Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
+	  
+	String url = "http://124.133.240.71:8822/jjservice/service.ashx?action=suborder"; //&userid=e5c9d39b-5232-4c14-bb83-b6b5f0d77ba0&address=&phone=&realname=&transportmoney=&productmoney=&ordermoney=&ids=&taobaohao=dd";
+	File file2 = new File("test.png");
+    System.out.println(file2.getAbsolutePath()+ "--" + file2.exists());
+    
+    
     RequestBody requestBody = new MultipartBody.Builder()
         .setType(MultipartBody.FORM)
-        .addFormDataPart("title", "Square Logo")
-        .addFormDataPart("image", "logo-square.png",
-            RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
+        //.addFormDataPart("title", "Square Logo")
+        .addFormDataPart("userid", "e5c9d39b-5232-4c14-bb83-b6b5f0d77ba0")
+        .addFormDataPart("address", "")
+        .addFormDataPart("realname", "")
+        .addFormDataPart("transportmoney", "")
+        .addFormDataPart("productmoney", "")
+        .addFormDataPart("ordermoney", "")
+        .addFormDataPart("ids", "")
+        .addFormDataPart("taobaohao", "dd")
+        .addFormDataPart("image", "test.png", RequestBody.create(MEDIA_TYPE_JPEG, file2))
         .build();
 
     Request request = new Request.Builder()
-        .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-        .url("https://api.imgur.com/3/image")
+        //.header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+        //.url("https://api.imgur.com/3/image")
+        .url(url)
         .post(requestBody)
         .build();
 
     Response response = client.newCall(request).execute();
+    System.out.println(response.code());
     if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-    System.out.println(response.body().string());
+    System.out.println("response = " + response.body().string());
   }
 
   public static void main(String... args) throws Exception {
