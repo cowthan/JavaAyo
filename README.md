@@ -3,20 +3,6 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 实际上有什么好代码都可以加进来，直到这个工程不堪其重
 ----------------------------------
 
-* Java学习笔记：
-	* 集合
-		* [JDK集合](./doc/doc-collections.md)
-		* [Guava集合]()
-	* 并发
-		* [并发-1](./doc/doc-concurrent.md)
-		* [并发-2](./doc/doc-concurrent2.md)
-		* [并发-3](./doc/doc-concurrent3.md)
-	* NIO 
-		* [nio-1](./doc/doc-nio.md)
-		* [nio-2](./doc/doc-nio2.md)
-	* 设计模式：都在源码里
-	* [ClassLoader](./doc/doc-classloader.md)
-	* [对象管理](./doc/doc-effective-object-management.md)
 	
 
 目录：
@@ -25,23 +11,33 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 * 目录
 	* [java高级]
 		* [Ayo库]
-		* http://blog.smoker.cc/translation/20160511.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    * [nio==>okio==>netty](./doc/doc-nio.md)
-	    	* nio和netty教程：http://ifeve.com/selectors/
-	    * [并发==>concurrency]
-	    	* [第一部分](./doc/doc-concurrent.md)
-	    	* [第二部分](./doc/doc-concurrent2.md)
-	    	* 深入理解ThreadLocal：https://github.com/edagarli/java-route/blob/master/shen_ru_li_jie_threadlocal.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    	* http://www.cnblogs.com/MOBIN/p/5436482.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    	* http://toutiao.io/posts/srrm8v
-	    	* http://www.importnew.com/19666.html
-	    * [集合==>guava](./doc/doc-collections.md)
-	    	* ConcurrentMap原理：https://github.com/edagarli/java-route/blob/master/concurrenthashmap_de_shi_xian_yuan_li.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    * [注解==>依赖注入dagger]
-	    	* dagger2：http://toutiao.io/posts/vahxj5
-	    * [反射==>有啥反射的增强库吗]
-	    * [ClassLoader==>字节码，apk]
-	    * [Socket==>openfire==>netty]
+		* 集合
+			* [JDK集合](./doc/doc-collections.md)
+			* [Guava集合]()
+			* ConcurrentMap原理：https://github.com/edagarli/java-route/blob/master/concurrenthashmap_de_shi_xian_yuan_li.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* 并发
+			* [并发-1](./doc/doc-concurrent.md)
+			* [并发-2](./doc/doc-concurrent2.md)
+			* [并发-3](./doc/doc-concurrent3.md)
+			* [ThreadLocal](./doc/doc-threadlocal.md)
+		    * java并发编程--Executor框架(一)  http://www.cnblogs.com/MOBIN/p/5436482.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		    * 怎么理解Condition http://www.importnew.com/19666.html
+			* JAVA细粒度锁实现的几种方式: http://toutiao.io/posts/srrm8v
+		* NIO,IO 
+			* [nio-1](./doc/doc-nio.md)
+			* [okio](./doc/doc-nio2-okio.md)
+		* 注解
+			* [笔记]
+		    * dagger2：http://toutiao.io/posts/vahxj5
+			* Retrofit和ButterKnife的注解怎么实现
+		* 反射
+			* JOOR
+		* [ClassLoader](./doc/doc-classloader.md)
+		    * [ClassLoader==>字节码，apk]
+		* Socket==>openfire==>netty
+		* [对象管理](./doc/doc-effective-object-management.md)
+		* 设计模式：都在源码里
+		* 更好的使用java：http://blog.smoker.cc/translation/20160511.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io		 
 	    * [Json]
 	    	* Gson：http://www.jianshu.com/p/e740196225a4#?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	    * [xml==>webservice]
@@ -105,10 +101,6 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 	* [项目用]
 		* [CodeWorld]
 	* [安卓]
-		* [仿安卓底层：学习用]
-			* [仿Looper，Handler](./doc/looper.md)
-			* [仿AsyncTask]
-		* [安卓代码生成器]
 		* 性能调优：
 			* http://mp.weixin.qq.com/s?__biz=MzA4NTQwNDcyMA==&mid=2650661382&idx=1&sn=8cd37062b5a67bb60db48aa1fe72b5a9&scene=0#wechat_redirect
 			* 微信为什么这么省流量：http://www.habadog.com/2015/10/23/wechat-use-less-data/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
