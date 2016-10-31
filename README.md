@@ -3,6 +3,21 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 实际上有什么好代码都可以加进来，直到这个工程不堪其重
 ----------------------------------
 
+* Java学习笔记：
+	* 集合
+		* [JDK集合](./doc/doc-collections.md)
+		* [Guava集合]()
+	* 并发
+		* [并发-1](./doc/doc-concurrent.md)
+		* [并发-2](./doc/doc-concurrent2.md)
+		* [并发-3](./doc/doc-concurrent3.md)
+	* NIO 
+		* [nio-1](./doc/doc-nio.md)
+		* [nio-2](./doc/doc-nio2.md)
+	* 设计模式：都在源码里
+	* [ClassLoader](./doc/doc-classloader.md)
+	* [对象管理](./doc/doc-effective-object-management.md)
+	
 
 目录：
 ================
