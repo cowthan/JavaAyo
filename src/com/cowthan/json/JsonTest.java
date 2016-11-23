@@ -1,12 +1,14 @@
 package com.cowthan.json;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.ayo.lang.JsonUtilsUseFast;
+import org.ayo.lang.Lang;
 
 import com.cowthan.json.data.Bean;
 
@@ -28,6 +30,18 @@ public class JsonTest {
 		Bean b = JsonUtilsUseFast.getBean(json, Bean.class);
 		System.out.println(b.birth);
 		
+		json = "{\"2千\": 400, \"5千\": 570,\"1万\": 760,\"2万\": 1140}";
+		Map<String, String> map2 = JsonUtilsUseFast.getBean(json, HashMap.class);
+		Lang.log("", map2);
+		
+		json = "{}";
+		map2 = JsonUtilsUseFast.getBean(json, HashMap.class);
+		Lang.log("", map2);
+		
+		///异常
+		json = "";
+		map2 = JsonUtilsUseFast.getBean(json, HashMap.class);
+		Lang.log("", map2);
 		
 	}
 	///{"createTime":"13232332","orderNum":"1122334","orderStatus":"1","portraiUri":"http://img3.imgtn.bdimg.com/it/u=3841520159,2387139296&fm=21&gp=0.jpg","tags":"","userId":"12313241234132"}

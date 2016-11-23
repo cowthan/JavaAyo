@@ -17,6 +17,7 @@ package okhttp3.recipes;
 
 import java.io.File;
 import java.io.IOException;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -40,6 +41,8 @@ public final class PostMultipart {
         .setType(MultipartBody.FORM)
         .addFormDataPart("title", "Square Logo")
         .addFormDataPart("image", "logo-square.png", RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
+        .addFormDataPart("image", "logo.png",
+            RequestBody.create(MEDIA_TYPE_PNG, new File("logo.png")))
         .build();
 
     Request request = new Request.Builder()
@@ -56,5 +59,7 @@ public final class PostMultipart {
 
   public static void main(String... args) throws Exception {
     new PostMultipart().run();
+    
+    Thread.sleep(5000);
   }
 }

@@ -3,6 +3,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 实际上有什么好代码都可以加进来，直到这个工程不堪其重
 ----------------------------------
 
+	
 
 目录：
 ================
@@ -10,23 +11,33 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 * 目录
 	* [java高级]
 		* [Ayo库]
-		* http://blog.smoker.cc/translation/20160511.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    * [nio==>okio==>netty](./doc/doc-nio.md)
-	    	* nio和netty教程：http://ifeve.com/selectors/
-	    * [并发==>concurrency]
-	    	* [第一部分](./doc/doc-concurrent.md)
-	    	* [第二部分](./doc/doc-concurrent2.md)
-	    	* 深入理解ThreadLocal：https://github.com/edagarli/java-route/blob/master/shen_ru_li_jie_threadlocal.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    	* http://www.cnblogs.com/MOBIN/p/5436482.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    	* http://toutiao.io/posts/srrm8v
-	    	* http://www.importnew.com/19666.html
-	    * [集合==>guava](./doc/doc-collections.md)
-	    	* ConcurrentMap原理：https://github.com/edagarli/java-route/blob/master/concurrenthashmap_de_shi_xian_yuan_li.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-	    * [注解==>依赖注入dagger]
-	    	* dagger2：http://toutiao.io/posts/vahxj5
-	    * [反射==>有啥反射的增强库吗]
-	    * [ClassLoader==>字节码，apk]
-	    * [Socket==>openfire==>netty]
+		* 集合
+			* [JDK集合](./doc/doc-collections.md)
+			* [Guava集合]()
+			* ConcurrentMap原理：https://github.com/edagarli/java-route/blob/master/concurrenthashmap_de_shi_xian_yuan_li.md?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		* 并发
+			* [并发-1](./doc/doc-concurrent.md)
+			* [并发-2](./doc/doc-concurrent2.md)
+			* [并发-3](./doc/doc-concurrent3.md)
+			* [ThreadLocal](./doc/doc-threadlocal.md)
+		    * java并发编程--Executor框架(一)  http://www.cnblogs.com/MOBIN/p/5436482.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+		    * 怎么理解Condition http://www.importnew.com/19666.html
+			* JAVA细粒度锁实现的几种方式: http://toutiao.io/posts/srrm8v
+		* NIO,IO 
+			* [nio-1](./doc/doc-nio.md)
+			* [okio](./doc/doc-nio2-okio.md)
+		* 注解
+			* [笔记]
+		    * dagger2：http://toutiao.io/posts/vahxj5
+			* Retrofit和ButterKnife的注解怎么实现
+		* 反射
+			* JOOR
+		* [ClassLoader](./doc/doc-classloader.md)
+		    * [ClassLoader==>字节码，apk]
+		* Socket==>openfire==>netty
+		* [对象管理](./doc/doc-effective-object-management.md)
+		* 设计模式：都在源码里
+		* 更好的使用java：http://blog.smoker.cc/translation/20160511.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io		 
 	    * [Json]
 	    	* Gson：http://www.jianshu.com/p/e740196225a4#?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
 	    * [xml==>webservice]
@@ -89,65 +100,6 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 		* [微博]
 	* [项目用]
 		* [CodeWorld]
-	* [安卓]
-		* [仿安卓底层：学习用]
-			* [仿Looper，Handler](./doc/looper.md)
-			* [仿AsyncTask]
-		* [安卓代码生成器]
-		* 性能调优：
-			* http://mp.weixin.qq.com/s?__biz=MzA4NTQwNDcyMA==&mid=2650661382&idx=1&sn=8cd37062b5a67bb60db48aa1fe72b5a9&scene=0#wechat_redirect
-			* 微信为什么这么省流量：http://www.habadog.com/2015/10/23/wechat-use-less-data/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* http://www.maiziedu.com/article/9126/
-		* 后台保活
-			* http://mp.weixin.qq.com/s?__biz=MzA3ODg4MDk0Ng==&mid=403254393&idx=1&sn=8dc0e3a03031177777b5a5876cb210cc&scene=0#wechat_redirect
-			* http://toutiao.com/a6268596289538998529/?tt_from=mobile_qq&utm_campaign=client_share&app=news_article&utm_source=mobile_qq&iid=3823768336&utm_medium=toutiao_ios
-			* http://www.jianshu.com/p/63aafe3c12af
-		* 适配
-			* http://mp.weixin.qq.com/s?__biz=MzA4MjU5NTY0NA==&mid=404220168&idx=1&sn=8a05266b5b7a5a886db3cf881d9f2edb&scene=0#wechat_redirect
-		* apk优化：
-			* http://jayfeng.com/2016/03/01/Android-APP%E7%BB%88%E6%9E%81%E7%98%A6%E8%BA%AB%E6%8C%87%E5%8D%97/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* 分析apk：http://toutiao.com/i6256184508563849730/?tt_from=mobile_qq&utm_campaign=client_share&ADSESSION=1463657200&app=news_article&utm_source=mobile_qq&ADUIN=279800561&iid=3521906016&utm_medium=toutiao_ios&ADPUBNO=26510&ADTAG=CLIENT.QQ.5431_.0
-			* studio 2.2页支持apk解析，估计就是classyshark
-		* 其他：不应该在这
-			* webview：http://www.jianshu.com/p/3fcf8ba18d7f?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* 一个底部导航栏：http://www.jianshu.com/p/8e6b75e11a3d?utm_campaign=maleskine&utm_content=note&utm_medium=mobile_a
-			* 从LinearLayout源码讲起：http://www.jianshu.com/p/f9b9f05222a8?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* 换肤：http://www.jianshu.com/p/af7c0585dd5b?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* Scroll解析：https://segmentfault.com/a/1190000004982933?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* MotionEvent：http://ztelur.github.io/2016/03/16/Android-MotionEvent%E8%AF%A6%E8%A7%A3/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* ViewDraggerHelper：http://www.jianshu.com/p/0372488cebcf?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* 动画1：http://p.codekk.com/blogs/detail/559623d8d6459ae793499787
-			* Fragment：http://m.blog.csdn.net/article/details?id=51435236
-			* 混淆：http://www.jianshu.com/p/f3455ecaa56e?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
-			* 仿微博弹出：http://m.myexception.cn/android/1880112.html
-			* RecyclerView：添加header和footer，https://github.com/blipinsk/RecyclerViewHeader
-			* 滑动显示和隐藏顶部底部栏：https://github.com/NashLegend/Auto-Hide-ListView
-			* recyclerview
-				* header和footer：参考XRecycleView的实现，LinearLayoutManager不影响，GridLayout控制span，其他不支持，Adapter被wrap一下以返回header和footer，position和下标不对应了
-				* 下拉：参考ultra，下拉的效果整理
-				* 上拉：自己实现
-				* type分组：Grid的type怎么支持呢
-				* sticky + section index：怎么搞呢
-				* swipe：在Item上就行，在Item上操作的都不是问题
-				* drag：不会
-				* 这些功能怎么组织
-					* 标准模板：header，footer，上拉，下拉，type，
-					* sticky模板
-				* 类组织：
-					* 基类：StatusUI,配合StatusUIManager，控制status，提供onloadok，fail，refresh接口，缓存，状态切换--控制刷新，停止刷新等
-						* 甚至还需要考虑加载过程是否可提示进度，横条还是圈
-						* 状态提供回调，可以同时控制外部
-					* 一级功能类
-						* 考虑界面如何填充，如列表，详情等，这里可以决定放什么content view
-						* 也就列表可以提前清楚数据怎么填充，其他都是具体业务类了啊
-						* 注意，到这一层，都还可以算是MVP的V层
-					* 实现类：
-						* 主要是P层的功能了
-						* 考虑数据怎么获取
-						* 可以添加上拉，下拉，自动刷新等操作了
-						* Recycler列表，带上拉，下拉，header，footer等
-						* sticky recycler列表
-						* 
 	* [其他]
 		* [markdown语法](./README)
 		* github静态网站：https://segmentfault.com/a/1190000002765287

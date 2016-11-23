@@ -40,5 +40,10 @@
 	<classpathentry kind="lib" path="libs-tools/org.apache.commons.lang.jar"/>
 	<classpathentry kind="lib" path="libs-tools/sun.misc.BASE64Decoder.jar"/>
 	<classpathentry kind="lib" path="libs-tools/netty-all-4.1.0.CR7.jar"/>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

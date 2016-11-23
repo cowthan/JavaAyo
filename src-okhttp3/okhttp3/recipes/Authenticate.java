@@ -24,37 +24,36 @@ import okhttp3.Response;
 import okhttp3.Route;
 
 public final class Authenticate {
-  private final OkHttpClient client;
+	private final OkHttpClient client;
 
-  public Authenticate() {
-	  
-	  ///你请求一个页面，会提示你输入用户名密码，然后提交用户名密码，再发起一次请求，，这个例子就是解决这个问题
-    client = new OkHttpClient.Builder()
-        .authenticator(new Authenticator() {
-          @Override public Request authenticate(Route route, Response response) throws IOException {
-            System.out.println("Authenticating for response: " + response);
-            System.out.println("Challenges: " + response.challenges());
-            String credential = Credentials.basic("jesse", "password1");
-            return response.request().newBuilder()
-                .header("Authorization", credential)
-                .build();
-          }
-        })
-        .build();
-  }
+	public Authenticate() {
 
-  public void run() throws Exception {
-    Request request = new Request.Builder()
-        .url("http://publicobject.com/secrets/hellosecret.txt")
-        .build();
+		// /你请求一个页面，会提示你输入用户名密码，然后提交用户名密码，再发起一次请求，，这个例子就是解决这个问题
+		client = new OkHttpClient.Builder().authenticator(new Authenticator() {
+			@Override
+			public Request authenticate(Route route, Response response)
+					throws IOException {
+				System.out.println("Authenticating for response: " + response);
+				System.out.println("Challenges: " + response.challenges());
+				String credential = Credentials.basic("jesse", "password1");
+				return response.request().newBuilder()
+						.header("Authorization", credential).build();
+			}
+		}).build();
+	}
 
-    Response response = client.newCall(request).execute();
-    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+	public void run() throws Exception {
+		Request request = new Request.Builder().url(
+				"http://publicobject.com/secrets/hellosecret.txt").build();
 
-    System.out.println(response.body().string());
-  }
+		Response response = client.newCall(request).execute();
+		if (!response.isSuccessful())
+			throw new IOException("Unexpected code " + response);
 
-  public static void main(String... args) throws Exception {
-    new Authenticate().run();
-  }
+		System.out.println(response.body().string());
+	}
+
+	public static void main(String... args) throws Exception {
+		new Authenticate().run();
+	}
 }
