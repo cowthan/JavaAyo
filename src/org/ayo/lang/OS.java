@@ -17,7 +17,7 @@ public class OS {
 	public static boolean isLinux(){
 		Properties prop = System.getProperties();
 		String os = prop.getProperty("os.name");
-		if(os.startsWith("linux") || os.startsWith("unix")){
+		if(os.startsWith("linux") || os.startsWith("unix") || os.startsWith("Linix")){
 			return true;
 		}else{
 			return false;

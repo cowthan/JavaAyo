@@ -15,7 +15,7 @@ public class Bean {
 	public String nth;
 	
 	public String getAddr(){
-		return "北京";
+		return "北'京";
 	}
 	
 	public String getName(){

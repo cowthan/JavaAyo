@@ -23,10 +23,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 
-public final class Authenticate {
+public final class CopyOfAuthenticate {
 	private final OkHttpClient client;
 
-	public Authenticate() {
+	public CopyOfAuthenticate() {
 
 		// /你请求一个页面，会提示你输入用户名密码，然后提交用户名密码，再发起一次请求，，这个例子就是解决这个问题
 		client = new OkHttpClient.Builder().authenticator(new Authenticator() {
@@ -35,25 +35,30 @@ public final class Authenticate {
 					throws IOException {
 				System.out.println("Authenticating for response: " + response);
 				System.out.println("Challenges: " + response.challenges());
-				String credential = Credentials.basic("jesse", "password1");
+				String credential = Credentials.basic("admin22222", "111111");
 				return response.request().newBuilder()
 						.header("Authorization", credential).build();
 			}
-		}).build();
+		})
+		.build();
 	}
 
 	public void run() throws Exception {
+		String credential = Credentials.basic("admin22222", "111111");
+		System.out.println(credential);  //Basic YWRtaW4yMjIyMjoxMTExMTE=
 		Request request = new Request.Builder().url(
-				"http://publicobject.com/secrets/hellosecret.txt").build();
+				"http://172.16.12.191:9090/plugins/restapi/v1/users")
+				.header("Authorization", credential)
+				.build();
 
 		Response response = client.newCall(request).execute();
 		if (!response.isSuccessful())
 			throw new IOException("Unexpected code " + response);
 
-		System.out.println(response.body().string());
+		System.out.println(response.body().string());//
 	}
 
 	public static void main(String... args) throws Exception {
-		new Authenticate().run();
+		new CopyOfAuthenticate().run();
 	}
 }
