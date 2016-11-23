@@ -12,4 +12,5 @@ public class YellowHuman implements IHuman{
 		System.out.println("黄色皮肤");
 	}
 
+	
 }

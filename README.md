@@ -97,6 +97,7 @@ java的测试项目，可以看做是java的ApiDemo，主要用于学习，也�
 		* 性能调优：
 			* http://mp.weixin.qq.com/s?__biz=MzA4NTQwNDcyMA==&mid=2650661382&idx=1&sn=8cd37062b5a67bb60db48aa1fe72b5a9&scene=0#wechat_redirect
 			* 微信为什么这么省流量：http://www.habadog.com/2015/10/23/wechat-use-less-data/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io
+			* http://www.maiziedu.com/article/9126/
 		* 后台保活
 			* http://mp.weixin.qq.com/s?__biz=MzA3ODg4MDk0Ng==&mid=403254393&idx=1&sn=8dc0e3a03031177777b5a5876cb210cc&scene=0#wechat_redirect
 			* http://toutiao.com/a6268596289538998529/?tt_from=mobile_qq&utm_campaign=client_share&app=news_article&utm_source=mobile_qq&iid=3823768336&utm_medium=toutiao_ios

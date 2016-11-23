@@ -2,13 +2,17 @@ package com.cowthan.json;
 
 import java.util.HashMap;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.ayo.lang.JsonUtilsUseFast;
 
 import com.cowthan.json.data.Bean;
 
 
 public class JsonTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ScriptException {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("haha", "111");
@@ -23,6 +27,7 @@ public class JsonTest {
 		String json = "{\"birth\":1462270181596,\"id\":10,\"isGirl\":false,\"name\":\"王二\"}"; //,\"girlFriend\":\"\"
 		Bean b = JsonUtilsUseFast.getBean(json, Bean.class);
 		System.out.println(b.birth);
+		
 		
 	}
 	///{"createTime":"13232332","orderNum":"1122334","orderStatus":"1","portraiUri":"http://img3.imgtn.bdimg.com/it/u=3841520159,2387139296&fm=21&gp=0.jpg","tags":"","userId":"12313241234132"}
