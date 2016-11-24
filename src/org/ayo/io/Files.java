@@ -90,23 +90,23 @@ public class Files {
 	
 	public static class steam{
 		
-		public static String string(InputStream is){
+		public static String string(InputStream is, String newLineSymbol){
 			try {
 				InputStreamReader reader = new InputStreamReader(is);
-				return string(reader);
+				return string(reader, newLineSymbol);
 			} finally {
 				io.close(is);
 			}
 			
 		}
 		
-		public static String string(Reader is){
+		public static String string(Reader is, String newLineSymbol){
 			BufferedReader br = new BufferedReader(is);
 			String line = "";
 			StringBuilder sb = new StringBuilder();
 			try {
 				while((line = br.readLine()) != null){
-					sb.append(line);
+					sb.append(line + newLineSymbol);
 				}
 				return sb.toString();
 			} catch (IOException e) {
@@ -123,13 +123,13 @@ public class Files {
 			return null;
 		}
 		
-		public static String string(String path){
-			return string(new File(path));
+		public static String string(String path, String newLineSymbol){
+			return string(new File(path), newLineSymbol);
 		}
 		
-		public static String string(File f){
+		public static String string(File f, String newLineSymbol){
 			try {
-				return string(new FileInputStream(f));
+				return string(new FileInputStream(f), newLineSymbol);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				return "";

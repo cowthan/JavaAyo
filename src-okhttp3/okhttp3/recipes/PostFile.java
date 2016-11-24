@@ -46,6 +46,8 @@ public final class PostFile {
     //.post(RequestBody.create(MEDIA_TYPE_MARKDOWN, file))
         .post(RequestBody.create(MEDIA_TYPE_PNG, file2))
         .build();
+    
+    	
 
     Response response = client.newCall(request).execute();
     System.out.println(response.code());

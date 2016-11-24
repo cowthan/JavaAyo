@@ -1,7 +1,5 @@
 package org.ayo.test;
 
-import java.io.IOException;
-
 public abstract class Tester {
 	private String name;
 

@@ -3,6 +3,10 @@ package com.cowthan.json;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.ayo.lang.JsonUtilsUseFast;
 import org.ayo.lang.Lang;
 
@@ -10,7 +14,7 @@ import com.cowthan.json.data.Bean;
 
 
 public class JsonTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ScriptException {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("haha", "111");

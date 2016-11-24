@@ -40,6 +40,7 @@ public final class PostMultipart {
     RequestBody requestBody = new MultipartBody.Builder()
         .setType(MultipartBody.FORM)
         .addFormDataPart("title", "Square Logo")
+        .addFormDataPart("image", "logo-square.png", RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
         .addFormDataPart("image", "logo.png",
             RequestBody.create(MEDIA_TYPE_PNG, new File("logo.png")))
         .build();
