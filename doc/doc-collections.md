@@ -25,10 +25,10 @@
 	    * Queue两个分支：LinkedList实现了一般化的队列接口，先进者先出，PriorityQueue基于Comparator等进行优先级排序，优先级高者先出
 	    * CopyOnWrite, Concurrent支持
     * 接口Map
-        * 两个分支：SortedMap（代表作TreeMap）和无序的（HashMap，LinkedHashMap，IdentityHashMao，WeakHashMap）
+        * 两个分支：SortedMap（代表作TreeMap）和无序的（HashMap，LinkedHashMap，IdentityHashMap，WeakHashMap）
         * 键不能重复，键还得能算出hash值
     * 接口Queue
-        * 待不全。。。。。。。。
+        * 出队入队
     * 涉及到的其他东西
         * 泛型
         * 同步的和非同步的
@@ -243,11 +243,20 @@ Map的entry是什么，Map的遍历
             * 如果在一个HashMap 实例里面要存储多个映射关系时，我们需要设置足够大的初始化大小以便更有效地存储映射关系而不是让哈希表自动增长让后rehash，造成性能瓶颈
             * 如果你知道有N个键值对，则可以：map = new HashMap<String, Foo>((int)Math.ceil(N / 0.7))
             * 这里加载因子默认值是0.7
+            *-------------------------------
+            * 安卓里的HashMap的装填因子DEFAULT_LOAD_FACTOR = .75F，默认值，sdk-24
+            * threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
+            * 何时rehash？其实是resize
+            * if ((size >= threshold) && (null != table[bucketIndex])) { resize(2 * table.length);... }
+            * 也就是说如果HashMap的capacity是100，那你put了75个元素之后，就会重新分配底层数组，newCapacity=200
     * LinkedHashMap：遍历时，顺序是插入次序，或者是LRU次序（最近最少使用），可在构造器中选择
+    	* 继承HashMap，所以还是用HashMap那一套来实现散列
+    	* 内部有一个双向链表，初始化LinedhashMap时，可以指定按照什么顺序遍历
+    	* 如果是插入顺序，则双端链表存的就是插入顺序，迭代器会按插入顺序返回
+    	* 如果是Lru顺序，则get方法会导致元素移到header
         * 如果需要对Map频繁遍历，而查找操作较少，推荐这个
         * linkedMap = new LinkedHashMap<Integer, String>(16, 0.75, true)，以LRU排序
         * 最少使用的会出现在队列前面，便于定期清理元素
-        * 可能有一个数组，存hash和Value，还有一个链表，存所有Value，并排序
     * TreeMap：排序的，基于Comparable
         * 基于红黑树
         * 带有subMap方法，返回一个子树
@@ -538,7 +547,7 @@ Set<T> set = Collections.singleton(T t);
 List<T> list = Collections.singletonList(T t);
 Map<K, V> map = Collections.singletonMap(key, value);
 
-//checked系列
+//checked系列，避免List list = new ArrayList<String>(); list.add(1);这种不规范使用
 Collections.checkedList(list, type);
 ```
 

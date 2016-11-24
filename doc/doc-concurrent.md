@@ -31,14 +31,9 @@ Executors：控制着一堆线程池
 ExecutorService：一个接口，继承自Executor，具有服务生命周期的Executor，例如关闭，这东西知道如何构建恰当的上下文来执行Runnable对象
 是一个比Executor使用更广泛的子类接口，其提供了生命周期管理的方法，以及可跟踪一个或多个异步任务执行状况返回Future的方法
 
-ScheduledExecutorService：一个接口，继承自ExecutorService
-
+ScheduledExecutorService：一个接口，继承自ExecutorService, 一个可定时调度任务的接口
 AbstractExecutorService：ExecutorService执行方法的默认实现
 ThreadPoolExecutor：继承自AbstractExecutorService，线程池，可以通过调用Executors以下静态工厂方法来创建线程池并返回一个ExecutorService对象
-
-ScheduledExecutorService：一个可定时调度任务的接口
-
-
 ScheduledThreadPoolExecutor：ScheduledExecutorService的实现，父类是ThreadPoolExecutor，一个可定时调度任务的线程池
 
 用法：Executors的每个方法都可以传入第二个参数，一个ThreadFactory对象
@@ -76,7 +71,9 @@ public ThreadPoolExecutor(int corePoolSize,
 
 3 ThreadFactory
 
+```
 //设置ThreadFactory：只有当需要新线程时，才会来这里调用，就是说ThreadFactory本身不管理线程池，只是给线程池干活的
+
 ExecutorService exec = Executors.newFixedThreadPool(2, new ThreadFactory() {
 	
 	private int threadCount = 0;
@@ -98,7 +95,7 @@ ExecutorService exec = Executors.newFixedThreadPool(2, new ThreadFactory() {
 		return tr;
 	}
 });
-
+```
 
 4 让出时间片
 
@@ -149,6 +146,8 @@ tr.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
 
 `isAlive()：线程是否还活着`
 这个会影响join，见第七课
+run方法执行完毕，是否isAlive？
+线程被中断，是否isAlive？
 
 
 第二课   Executor深入分析
@@ -158,6 +157,7 @@ public interface Executor {
     void execute(Runnable command);
 }
 
+意思就是给你一个command，你想让它在哪儿执行run
 看C2.java里的三个Executor的实现，取自java源码里的注释，这几行代码基本阐明了Executor的作用
 
 Excutor能决定的事：
@@ -166,7 +166,7 @@ Excutor能决定的事：
 
 Excutor管不了的事：
 * Callable，Future管不了
-* 没有一个线程池，线程池可能需要自己写，跟Executor还是谁的没关系
+* 没有一个线程池，线程池可能需要自己写，跟Executor没关系
 * 没法延时，定时运行
 
 
@@ -176,8 +176,6 @@ Excutor管不了的事：
 
 
 Runnable不产生返回值，ExecutorService.execute(Runnable)，走的是run方法
-
-
 Callable产生返回值，ExecutorService.submit(Callable)，走的是call方法
 
 用法1：submit Callable and get a Future, block in future.get()
@@ -506,7 +504,7 @@ private <T> T doInvokeAny(Collection<? extends Callable<T>> tasks,
 ///例4：（启动10条线程，谁先执行完成就返回谁）
 public class CompletionServiceTest {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        ExecutorService executor = Executors.newFixedThreadPool(10);        //创建含10.条线程的线程池
+        ExecutorService executor = Executors.newFixedThreadPool(10);        //创建含10条线程的线程池
         CompletionService completionService = new ExecutorCompletionService(executor);
         for (int i =1; i <=10; i ++) {
             final  int result = i;
