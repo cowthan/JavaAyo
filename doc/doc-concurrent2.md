@@ -14,6 +14,11 @@ sleeper结束时，sleeper.isAlive()为false
 
 一个线程可以join到其他多个线程上，等到都结束了才继续执行
 
+在当前线程c调用t.join()表示：
+* c等待t执行完毕，期间c和t都可以被中断
+* t必须是从c产生的线程
+
+
 有类似需求，可以考虑CyclicBarrier，栅栏，可能比join更合适
 
 
@@ -27,6 +32,8 @@ sleeper结束时，sleeper.isAlive()为false
 
 基本上所有保护共享受限资源的方法，都是序列化对受限资源的访问（同步化），也就是程序到这里就变成并行了，加个锁保证同时只有一个线程访问，这种机制就叫互斥量
 
+如果你改变一个对象的状态是一个复杂的过程：
+* 这期间你最好保证不要出现任何被打断的可能
 
 
 ##原子类
@@ -38,13 +45,13 @@ sleeper结束时，sleeper.isAlive()为false
 ——但是可以使用Atom系列类来保证安全
 
 有两部分内容：
-——普通的运算操作的原子性，如加减乘除，这个很难搞懂
+——普通的运算操作的原子性，如加减乘除，这个很难搞懂，你知道a+b是不是原子操作？
 ——Atom系列类，提供了一套原子操作，基本还是有保障的
 
 ####（1） 原子操作
 
 普通运算的原子性：暂时不做研究了
-x++不是原子操作
+a++不是原子操作
 +-*/也不是原子操作
 x = x + 1  =也不是原子操作
 
@@ -69,7 +76,7 @@ return currentEvenValue.addAndGet(2);  //这里给value增加了2，并返回其
     * 说是原子操作被用来构建Concurrent包，不建议你用
     * 用了原子操作，就省了很多加锁操作
 
-* 都由什么
+* 都有什么
 	* AtomicInteger
 	* AtomicLong
 	* AtomicReference
@@ -333,7 +340,7 @@ Exchanger
 
 ###（1）简介
 obj.wait()和obj.notify()的作用：
-——释放obj上的锁，所以必须先持有锁了，通过synchronized
+——wait释放obj上的锁，所以必须先持有锁了，通过synchronized
 ——程序在这里开始阻塞，发出的信息就是：我在obj上等待，释放了obj的锁，并且等待notify
 ——别的程序此时可以拿到obj上的锁了
 ——notify也会先释放obj的锁，所以也得先拿到锁，obj.notify()会通知在obj上wait的对象
@@ -376,7 +383,8 @@ synchronized(obj){
 	//锁在这准备释放了，wait复活的两个条件都满足了
 }
 
-
+notify会唤醒最后一个在obj上wait的线程
+notifyAll会唤醒所有在obj上wait的线程
 
 
 可以接受时间参数的wait：
