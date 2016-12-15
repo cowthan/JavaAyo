@@ -38,7 +38,6 @@ public class WorldClockServerInitializer extends ChannelInitializer<SocketChanne
         if (sslCtx != null) {
             p.addLast(sslCtx.newHandler(ch.alloc()));
         }
-        fork
         p.addLast(new ProtobufVarint32FrameDecoder());
         p.addLast(new ProtobufDecoder(WorldClockProtocol.Locations.getDefaultInstance()));
 

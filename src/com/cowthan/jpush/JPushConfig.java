@@ -24,4 +24,15 @@ public class JPushConfig {
 		
 	}
 	
+	/**
+	 * 路书
+	 * @author Administrator
+	 *
+	 */
+	public static final class roadbook{
+		public static final String ak = "ab37fc6ba234832872a18454";
+		public static final String sk = "87f150b6b4e6ede1bf42771d";
+		
+	}
+	
 }

@@ -2,9 +2,9 @@ package com.cowthan.jpush;
 
 import java.util.Map;
 
+import cn.jiguang.common.resp.APIConnectionException;
+import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.JPushClient;
-import cn.jpush.api.common.resp.APIConnectionException;
-import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
 
 public class JPushUtils {
@@ -35,7 +35,7 @@ public class JPushUtils {
 	}
 	
 	
-	private static void _pushToAndroid(String ak, String sk, String title, String content, Map<String, String> extras, String[] alias, String[] registrationIds, boolean willSilence) throws APIConnectionException, APIRequestException{
+	private static void _pushToAndroid(String ak, String sk, String title, String content, Map<String, String> extras, String[] alias, String[] registrationIds, boolean willSilence) throws APIConnectionException, APIRequestException {
 		
 		//初始化
 		JPushClient jpush = new JPushClient(sk, ak);
