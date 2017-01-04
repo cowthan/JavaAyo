@@ -12,13 +12,12 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
 @SupportedAnnotationTypes({"com.avenwu.annotation.PrintMe"})
-public class BeanProcessor extends AbstractProcessor {
+public class BeanProcessor2 extends AbstractProcessor {
 
 	// 元素操作的辅助类
 	Elements elementUtils;
@@ -35,22 +34,19 @@ public class BeanProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annotations,
 			RoundEnvironment roundEnv) {
 
-		for (TypeElement currentAnnotation : annotations) {
-            Name qualifiedName = currentAnnotation.getQualifiedName();
-            if (qualifiedName.contentEquals("com.avenwu.annotation.PrintMe")){
-                Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(currentAnnotation);
-                for (Element element : annotatedElements) {
-                	Version v = element.getAnnotation(Version.class);
-                    int major = v.major();
-                    int minor = v.minor();
-                    if(major < 0 || minor < 0) {
-                        String errMsg = "Version cannot be negative. major = " + major + " minor = " + minor;
-                        Messager messager = this.processingEnv.getMessager();
-                        messager.printMessage(javax.tools.Diagnostic.Kind.ERROR,errMsg,element);
-}
-                }
-            }
-        }
+		// 获得被该注解声明的元素
+		Set<? extends Element> elememts = roundEnv
+				.getElementsAnnotatedWith(Seriable.class);
+		TypeElement classElement = null;// 声明类元素
+		List<VariableElement> fields = null;// 声明一个存放成员变量的列表
+		// 存放二者
+		Map<String, List<VariableElement>> maps = new HashMap<String, List<VariableElement>>();
+		// 遍历
+		for (Element ele : elememts) {
+			System.out.println(ele.getSimpleName());
+			ele.getKind().
+		}
+
 		return true;
 	}
 	

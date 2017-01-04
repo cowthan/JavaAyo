@@ -50,7 +50,7 @@ public class C7 {
 		guest.start();
 		
 		///注掉下面这段，则sleeper会睡5秒，不注掉，3秒后就会打断sleeper的睡眠：被interrupt的是sleep方法
-//		ScheduledExecutorService exec = Executors.newScheduledThreadPool(2);
+		ScheduledExecutorService exec = Executors.newScheduledThreadPool(2);
 //		exec.schedule(new Runnable() {
 //			public void run() {
 //				sleeper.interrupt();
@@ -58,11 +58,11 @@ public class C7 {
 //		}, 3, java.util.concurrent.TimeUnit.SECONDS);
 //		
 //		///注掉下面这段，则guest会等5秒，不注掉，2秒后就会打断等待：被interrupt的是join方法
-//		exec.schedule(new Runnable() {
-//			public void run() {
-//				guest.interrupt();
-//			}
-//		}, 2, java.util.concurrent.TimeUnit.SECONDS);
+		exec.schedule(new Runnable() {
+			public void run() {
+				guest.interrupt();
+			}
+		}, 2, java.util.concurrent.TimeUnit.SECONDS);
 	}
 	
 }

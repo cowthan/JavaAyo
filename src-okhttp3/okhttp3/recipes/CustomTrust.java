@@ -29,6 +29,9 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.CertificatePinner;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
@@ -60,6 +63,7 @@ public final class CustomTrust {
 				"https://publicobject.com/helloworld.txt").build();
 
 		Response response = client.newCall(request).execute();
+		
 		if (!response.isSuccessful())
 			throw new IOException("Unexpected code " + response);
 

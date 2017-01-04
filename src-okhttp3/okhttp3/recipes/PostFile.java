@@ -29,7 +29,6 @@ public final class PostFile {
       = MediaType.parse("text/x-markdown; charset=utf-8");
   private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
-
   private final OkHttpClient client = new OkHttpClient();
 
   public void run() throws Exception {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package okhttp3.recipes;
+package okhttp3.github;
 
 import java.io.IOException;
 import okhttp3.OkHttpClient;
