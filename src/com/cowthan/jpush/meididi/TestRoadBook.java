@@ -5,28 +5,31 @@ import java.util.Map;
 
 import com.cowthan.jpush.JPushConfig;
 import com.cowthan.jpush.JPushUtils;
+import com.cowthan.jpush.sample.PushExample;
 
 /**
  * 美滴滴咨询师端订单推送的测试
  * @author Administrator
  *
  */
-public class TestMeididiSeller {
+public class TestRoadBook {
 	
 	public static void main(String[] args) {
 		
 		Map<String, String> extras = new HashMap<String, String>();
 		extras.put("orderNum", "113333");
 		
-		String[] alias = new String[]{"要推送的别名，就是融云id"};
+		String[] alias = new String[]{"breaker"};
 		
-		JPushUtils.pushToAndroid(JPushConfig.meididi_seller.ak,
-				JPushConfig.meididi_seller.sk, 
+		//PushExample.testSendPush_fromJSON();
+		
+		JPushUtils.pushToAndroid(JPushConfig.roadbook.ak,
+				JPushConfig.roadbook.sk, 
 				"title", 
 				"content", 
 				extras, 
-				alias, 
 				null, 
+				new String[]{"120c83f7602bb23b72a"}, 
 				false);
 		
 	}
