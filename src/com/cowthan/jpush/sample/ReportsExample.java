@@ -14,9 +14,9 @@ import cn.jpush.api.report.UsersResult;
 public class ReportsExample {
     protected static final Logger LOG = LoggerFactory.getLogger(ReportsExample.class);
 
-    // demo App defined in resources/jpush-api.conf 
-	private static final String appKey = "dd1066407b044738b6479275";
-	private static final String masterSecret = "e8cc9a76d5b7a580859bcfa7";
+//    // demo App defined in resources/jpush-api.conf 
+//	private static final String appKey = "37250f16d832c50f0361d1be";
+//	private static final String masterSecret = "31e114ab551cee492f6abf4b";
 
 	public static void main(String[] args) {
 		testGetReport();
@@ -26,7 +26,7 @@ public class ReportsExample {
 	
     
 	public static void testGetReport() {
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey);
 		try {
             ReceivedsResult result = jpushClient.getReportReceiveds("1942377665");
             LOG.debug("Got result - " + result);
@@ -43,7 +43,7 @@ public class ReportsExample {
 	}
 
     public static void testGetUsers() {
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey);
         try {
             UsersResult result = jpushClient.getReportUsers(TimeUnit.DAY, "2014-06-10", 3);
             LOG.debug("Got result - " + result);
@@ -60,7 +60,7 @@ public class ReportsExample {
     }
 
     public static void testGetMessages() {
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey);
         try {
             MessagesResult result = jpushClient.getReportMessages("269978303");
             LOG.debug("Got result - " + result);
