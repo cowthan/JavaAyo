@@ -18,8 +18,8 @@ public class ScheduleExample {
 
     protected static final Logger LOG = LoggerFactory.getLogger(ScheduleExample.class);
 
-    private static final String appKey ="dd1066407b044738b6479275";
-    private static final String masterSecret = "e8cc9a76d5b7a580859bcfa7";
+    private static final String appKey = PushConfig.appKey;
+    private static final String masterSecret = PushConfig.masterSecret;
 
     public static void main(String[] args) {
 

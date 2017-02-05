@@ -15,15 +15,15 @@ import cn.jpush.api.device.TagAliasResult;
 public class DeviceExample {
 	protected static final Logger LOG = LoggerFactory.getLogger(DeviceExample.class);
 
-	private static final String appKey = "dd1066407b044738b6479275";
-	private static final String masterSecret = "e8cc9a76d5b7a580859bcfa7";
+//	private static final String appKey = "dd1066407b044738b6479275";
+//	private static final String masterSecret = "e8cc9a76d5b7a580859bcfa7";
 	private static final String TAG1 = "tag1";
 	private static final String ALIAS1 = "alias1";
 	private static final String ALIAS2 = "alias2";
 	private static final String REGISTRATION_ID1 = "0900e8d85ef";
 	private static final String REGISTRATION_ID2 = "0a04ad7d8b4";
 
-	private static JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+	private static JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey);
 
 	public static void main(String[] args) {
 //		testGetDeviceTagAlias();

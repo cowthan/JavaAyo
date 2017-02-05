@@ -27,8 +27,8 @@ public class PushExample {
     protected static final Logger LOG = LoggerFactory.getLogger(PushExample.class);
 
     // demo App defined in resources/jpush-api.conf 
-	private static final String appKey ="ab37fc6ba234832872a18454";
-	private static final String masterSecret = "87f150b6b4e6ede1bf42771d";
+//	private static final String appKey ="ab37fc6ba234832872a18454";
+//	private static final String masterSecret = "87f150b6b4e6ede1bf42771d";
 	
 	public static final String TITLE = "Test from API example";
     public static final String ALERT = "Test from API Example - alert";
@@ -44,14 +44,15 @@ public class PushExample {
 	}
 	
 	public static void main(String[] args) {
-		testSendPush_fromJSON();
+//		testSendPush_fromJSON();
+		testSendPush();
 	}
 	
 	public static void testSendPush() {
 	    // HttpProxy proxy = new HttpProxy("localhost", 3128);
 	    // Can use this https proxy: https://github.com/Exa-Networks/exaproxy
 		ClientConfig clientConfig = ClientConfig.getInstance();
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, clientConfig);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey, null, clientConfig);
         
         // For push, all you need do is to build PushPayload object.
         PushPayload payload = buildPushObject_ios_tagAnd_alertWithExtrasAndMessage();
@@ -74,7 +75,7 @@ public class PushExample {
 	//use String to build PushPayload instance
     public static void testSendPush_fromJSON() {
         ClientConfig clientConfig = ClientConfig.getInstance();
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, clientConfig);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey, null, clientConfig);
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(PlatformNotification.class, new InterfaceAdapter<PlatformNotification>())
                 .create();
@@ -165,13 +166,13 @@ public class PushExample {
     
     public static PushPayload buildPushObject_ios_tagAnd_alertWithExtrasAndMessage() {
         return PushPayload.newBuilder()
-                .setPlatform(Platform.ios())
-                .setAudience(Audience.tag_and("tag1", "tag_all"))
+                .setPlatform(Platform.all())
+                .setAudience(Audience.tag_and("tag1", "tag_all"))  ///客户端必须同时存在这两个tag
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder()
+                        .addPlatformNotification(AndroidNotification.newBuilder()
                                 .setAlert(ALERT)
-                                .setBadge(5)
-                                .setSound("happy")
+                                //.setBadge(5)
+                                //.setSound("happy")
                                 .addExtra("from", "JPush")
                                 .build())
                         .build())
@@ -201,7 +202,7 @@ public class PushExample {
         // Setup the custom hostname
         config.setPushHostName("https://api.jpush.cn");
 
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey, null, config);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey, null, config);
 
         // For push, all you need do is to build PushPayload object.
         PushPayload payload = buildPushObject_all_all_alert();
@@ -223,7 +224,7 @@ public class PushExample {
     }
 
     public static void testSendIosAlert() {
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey);
 
         IosAlert alert = IosAlert.newBuilder()
                 .setTitleAndBody("test alert", "subtitle", "test ios alert json")
@@ -243,7 +244,7 @@ public class PushExample {
     }
 
     public static void testSendWithSMS() {
-        JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+        JPushClient jpushClient = new JPushClient(PushConfig.masterSecret, PushConfig.appKey);
         try {
             SMS sms = SMS.content("Test SMS", 10);
             PushResult result = jpushClient.sendAndroidMessageWithAlias("Test SMS", "test sms", sms, "alias1");

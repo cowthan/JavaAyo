@@ -15,19 +15,20 @@ import org.ayo.qiniu.QiniuSpace;
 import com.qiniu.common.Config;
 import com.qiniu.storage.model.FileInfo;
 
-
-public class TestQiniu {
+public class TestQiniu4 {
 	
-	///cowthan@163.com
+
+	///dddood3058@126.com（fedcba4321）---ccc1024---里面放的全是露点美女和gif
+	
 	
 	public static void main(String[] args) {
 		
-		String ak = "uNaQ_NGIZurU3OMxikyGpk-t4v8tIbP8ct5VQs_f";
-		String sk = "FbtNKEzCGbIFccnX14M9iKwQsGcX9YZUyiJylh-9";
-		String token = "uNaQ_NGIZurU3OMxikyGpk-t4v8tIbP8ct5VQs_f:AM6XGfArmAlRekKqbPk-teMuBoU=:eyJzY29wZSI6ImNvd3RoYW4xMTAzIiwiZGVhZGxpbmUiOjE3NjIwMjA4NDB9";
-		
-		String bucket = "cowthan1103";
-		String domain = "http://7xo0ny.com1.z0.glb.clouddn.com/";
+		String ak = "przk-OcKylSzIbRFUeTAoSoiYKkKg4NNRQbSLFM0";
+		String sk = "JoHeFWYKrEfCR9JgLvr6TLr8WLjX6-6Y7qQVVrLJ";
+		String token = "przk-OcKylSzIbRFUeTAoSoiYKkKg4NNRQbSLFM0:DKdXIuGaFLTtOHoSk0DJzTfhdaI=:eyJzY29wZSI6ImNjYzEwMjQiLCJkZWFkbGluZSI6MTc2MjAyMTI4NX0=";
+
+		String bucket = "ccc1024";
+		String domain = "http://7xnroh.com1.z0.glb.clouddn.com/";
 		
 		QiniuSpace space = QiniuSpace.space(ak, sk);
 		
@@ -40,7 +41,7 @@ public class TestQiniu {
 			if(!bkt.equals(bucket)) continue;
 			System.out.println("------" + bkt);
 			QiniuBucket bucket1 = space.bucket(bkt, domain);
-			List<FileInfo> files = bucket1.getFileList(bkt, "");
+			List<FileInfo> files = bucket1.getFileList(bucket, "");
 			Collections.sort(files, new Comparator<FileInfo>() {
 				@Override
 				public int compare(FileInfo o1, FileInfo o2) {
