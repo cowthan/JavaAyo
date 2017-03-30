@@ -44,7 +44,7 @@ public class BeanProcessor2 extends AbstractProcessor {
 		// 遍历
 		for (Element ele : elememts) {
 			System.out.println(ele.getSimpleName());
-			ele.getKind().
+			//ele.getKind().
 		}
 
 		return true;

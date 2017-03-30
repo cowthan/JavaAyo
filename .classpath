@@ -12,7 +12,6 @@
 	<classpathentry kind="src" path="src-okhttp3"/>
 	<classpathentry kind="src" path="src-okhttp3-ws"/>
 	<classpathentry kind="src" path="src-retrofit"/>
-	<classpathentry kind="src" path="src-netty"/>
 	<classpathentry kind="src" path="src-jpush"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="libs-common/fastjson-1.2.6.jar"/>
@@ -46,6 +45,11 @@
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/j3d-amd64">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/Java/Java3D/1.5.1/bin"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
